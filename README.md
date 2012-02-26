@@ -10,6 +10,7 @@ STATUS
 ------
 
 What works:
+
   * from end-user perspective, following APIs were exposed and tested:
     * creating/destroying new Lua state (luaL_newstate(), lua_close())
     * basic integer operations on stack (lua_pushinteger(), lua_gettop(), lua_equal())
@@ -19,6 +20,7 @@ What works:
     * compiled and tested on: x86 (8c+8g), x64 (6c+6g), Windows/Linux
 
 Highlights on what does _not_ work yet:
+
   * Lua lexer/parser;
   * print/string.format, number <-> string conversions.
 
@@ -27,6 +29,7 @@ WANTED / PLANS
 --------------
 
 Crucial:
+
   * to implement (leveraging Go fmt.Sprintf) a simplified C sprintf() function,
     in extent enough to cover the handful of use cases present in Lua sources
     (this shall enable more descriptive errors from Lua internals, and make it
@@ -43,6 +46,7 @@ Crucial:
     (http://lua-users.org/lists/lua-l/2006-03/msg00716.html)
 
 Would be nice-ies:
+
   * write unit tests for C standard library functions implemented for Lua;
   * improve C standard library
     * maybe use some non-GPL Open Source code (FreeBSD? some stdlib for embedded systems?);
@@ -57,7 +61,7 @@ most useful at this moment.
 BACKGROUND INFO
 ---------------
 
-Lua?
+**Lua?**
 
 http://lua.org
 
@@ -67,7 +71,7 @@ Easily embeddable (one of its core goals), mature (Lua 1.0 ~ 1993, many applicat
 worldwide since then). MIT-style licensed. Umm... oh, and I like it.
 
 
-Go Language?
+**Go Language?**
 
 http://golang.org
 
