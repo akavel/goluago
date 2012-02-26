@@ -470,6 +470,7 @@ LUA_API const char *lua_pushvfstring (lua_State *L, const char *fmt,
 }
 
 
+#pragma textflag 7
 LUA_API const char *lua_pushfstring (lua_State *L, const char *fmt, ...) {
   const char *ret;
   va_list argp;

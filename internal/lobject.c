@@ -169,6 +169,7 @@ const char *luaO_pushvfstring (lua_State *L, const char *fmt, va_list argp) {
 }
 
 
+#pragma textflag 7
 const char *luaO_pushfstring (lua_State *L, const char *fmt, ...) {
   const char *msg;
   va_list argp;

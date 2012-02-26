@@ -83,6 +83,7 @@ LUALIB_API void luaL_where (lua_State *L, int level) {
 }
 
 
+#pragma textflag 7
 LUALIB_API int luaL_error (lua_State *L, const char *fmt, ...) {
   va_list argp;
   va_start(argp, fmt);
@@ -275,7 +276,7 @@ LUALIB_API void luaI_openlib (lua_State *L, const char *libname,
 ** =======================================================
 */
 
-#if defined(LUA_COMPAT_GETN)
+#ifdef LUA_COMPAT_GETN
 
 static int checkint (lua_State *L, int topop) {
   int n = (lua_type(L, -1) == LUA_TNUMBER) ? lua_tointeger(L, -1) : -1;

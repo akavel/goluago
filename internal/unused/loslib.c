@@ -215,6 +215,7 @@ static int os_setlocale (lua_State *L) {
 
 static int os_exit (lua_State *L) {
   exit(luaL_optint(L, 1, EXIT_SUCCESS));
+  return 0;
 }
 
 static const luaL_Reg syslib[] = {

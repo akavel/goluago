@@ -230,15 +230,15 @@ static void read_long_string (LexState *ls, SemInfo *seminfo, int sep) {
         luaX_lexerror(ls, (seminfo) ? "unfinished long string" :
                                    "unfinished long comment", TK_EOS);
         break;  /* to avoid warnings */
-#if defined(LUA_COMPAT_LSTR)
+#ifdef LUA_COMPAT_LSTR
       case '[': {
         if (skip_sep(ls) == sep) {
           save_and_next(ls);  /* skip 2nd `[' */
           cont++;
-#if LUA_COMPAT_LSTR == 1
-          if (sep == 0)
-            luaX_lexerror(ls, "nesting of [[...]] is deprecated", '[');
-#endif
+// #if LUA_COMPAT_LSTR == 1
+          // if (sep == 0)
+            // luaX_lexerror(ls, "nesting of [[...]] is deprecated", '[');
+// #endif
         }
         break;
       }
@@ -246,10 +246,10 @@ static void read_long_string (LexState *ls, SemInfo *seminfo, int sep) {
       case ']': {
         if (skip_sep(ls) == sep) {
           save_and_next(ls);  /* skip 2nd `]' */
-#if defined(LUA_COMPAT_LSTR) && LUA_COMPAT_LSTR == 2
-          cont--;
-          if (sep == 0 && cont >= 0) break;
-#endif
+// #if defined(LUA_COMPAT_LSTR) && LUA_COMPAT_LSTR == 2
+          // cont--;
+          // if (sep == 0 && cont >= 0) break;
+// #endif
           goto endloop;
         }
         break;

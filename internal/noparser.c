@@ -39,12 +39,12 @@ LUAI_FUNC int luaU_dump (lua_State* L, const Proto* f, lua_Writer w, void* data,
   UNUSED(w);
   UNUSED(data);
   UNUSED(strip);
-#if 1
+//#if 1
   UNUSED(L);
   return 0;
-#else
-  lua_pushliteral(L,"dumper not loaded");
-  lua_error(L);
-#endif
+//#else
+//  lua_pushliteral(L,"dumper not loaded");
+//  lua_error(L);
+//#endif
 }
 #endif

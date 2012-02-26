@@ -15,7 +15,7 @@
 #include "lua.h"
 
 
-#if defined(LUA_COMPAT_GETN)
+#ifdef LUA_COMPAT_GETN
 LUALIB_API int (luaL_getn) (lua_State *L, int t);
 LUALIB_API void (luaL_setn) (lua_State *L, int t, int n);
 #else
@@ -23,7 +23,7 @@ LUALIB_API void (luaL_setn) (lua_State *L, int t, int n);
 #define luaL_setn(L,i,j)        ((void)0)  /* no op! */
 #endif
 
-#if defined(LUA_COMPAT_OPENLIB)
+#ifdef LUA_COMPAT_OPENLIB
 #define luaI_openlib	luaL_openlib
 #endif
 

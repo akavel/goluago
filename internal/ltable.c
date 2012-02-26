@@ -38,11 +38,11 @@
 /*
 ** max size of array part is 2^MAXBITS
 */
-#if LUAI_BITSINT > 26
+// #if LUAI_BITSINT > 26
 #define MAXBITS		26
-#else
-#define MAXBITS		(LUAI_BITSINT-2)
-#endif
+// #else
+// #define MAXBITS		(LUAI_BITSINT-2)
+// #endif
 
 #define MAXASIZE	(1 << MAXBITS)
 
@@ -577,7 +577,7 @@ int luaH_getn (Table *t) {
 
 
 
-#if defined(LUA_DEBUG)
+#ifdef LUA_DEBUG
 
 Node *luaH_mainposition (const Table *t, const TValue *key) {
   return mainposition(t, key);

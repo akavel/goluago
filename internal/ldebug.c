@@ -628,6 +628,7 @@ void luaG_errormsg (lua_State *L) {
 }
 
 
+#pragma textflag 7
 void luaG_runerror (lua_State *L, const char *fmt, ...) {
   va_list argp;
   va_start(argp, fmt);

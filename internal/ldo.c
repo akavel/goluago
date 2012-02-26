@@ -212,7 +212,7 @@ static StkId adjust_varargs (lua_State *L, Proto *p, int actual) {
   StkId base, fixed;
   for (; actual < nfixargs; ++actual)
     setnilvalue(L->top++);
-#if defined(LUA_COMPAT_VARARG)
+#ifdef LUA_COMPAT_VARARG
   if (p->is_vararg & VARARG_NEEDSARG) { /* compat. with old-style vararg? */
     int nvar = actual - nfixargs;  /* number of extra arguments */
     lua_assert(p->is_vararg & VARARG_HASARG);
