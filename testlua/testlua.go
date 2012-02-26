@@ -1,7 +1,7 @@
 package main
 
 import (
-	lua "lua51/internal"
+	lua "github.com/akavel/goluago/internal"
 )
 
 func main() {

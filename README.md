@@ -1,5 +1,5 @@
 
-Library goluago aims to become a port of Lua interpreter to Go Language Toolchain
+Library goluago aims to become a port of Lua 5.1 interpreter to Go Language Toolchain
 (first 8c/6c/5c, ultimately maybe pure Go).
 
 The library is at early stage of development (not feature complete/not ready
@@ -86,12 +86,12 @@ INSTALLATION
 You need a recent weekly of the Go language toolkit (see: http://weekly.golang.org).
 With the environment properly set up, type:
 
-    go get github.com/akavel/lua51/internal
-    go test github.com/akavel/lua51/internal
+    go get github.com/akavel/goluago/internal
+    go test github.com/akavel/goluago/internal
 
 To retrieve and run a sample program:
 
-    go get github.com/akavel/lua51/testlua
+    go get github.com/akavel/goluago/testlua
     cd $GOROOT   # or, see $GOPATH; on Windows %GOROOT%, %GOPATH%
     bin/testlua  # on Windows: bin\testlua.exe
 
