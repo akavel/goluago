@@ -2,8 +2,7 @@ Library goluago aims to become a port of Lua 5.1 interpreter to Go Language Tool
 (first 8c/6c/5c, ultimately maybe pure Go).
 
 The library is at early stage of development (not feature complete/not ready
-for production use), but some important "proof of concept" goals were already
-completed successfully:
+for production use), but some important goals were already completed successfully:
 
 STATUS
 ------
