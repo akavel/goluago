@@ -3,11 +3,18 @@
 
 #include <stddef.h>
 
-typedef int va_list;
+#ifdef _64BIT
+#define _BIGWORD 8
+#else
+#define _BIGWORD 4
+#endif
 
-#define va_start(ap,lastarg) 
 
-#define va_arg(ap,type) 0
+typedef char* va_list;
+
+#define va_start(ap,lastarg) ap = (((char*)(void*)&lastarg)+_BIGWORD)
+
+#define va_arg(ap,type) (*(type*)(void*)(ap+=_BIGWORD, ap-_BIGWORD))
 
 #define va_end(ap)
 

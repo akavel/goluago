@@ -9,40 +9,48 @@ completed successfully:
 STATUS
 ------
 
-What works:
-  * from end-user perspective, following APIs were exposed and tested:
-    * creating/destroying new Lua state (luaL_newstate(), lua_close())
-    * basic integer operations on stack (lua_pushinteger(), lua_gettop(), lua_equal())
-    * running simple _precompiled_ Lua code chunk (luaL_loadbuffer(), lua_call(),
-      tested on precompiled chunk "return 2+3")
-  * inside, minimal Lua core compiles successfully
-    * compiled and tested on: x86 (8c+8g), x64 (6c+6g), Windows/Linux
+What works - new in preview 2:
 
-Highlights on what does _not_ work yet:
-  * Lua lexer/parser;
-  * print/string.format, number <-> string conversions.
+  * MILESTONE: parsing & compiling Lua scripts to bytecode (via luaL_loadbuffer())
+  * Lua: standard libraries: basic library (print(), ipairs(), assert(), loadstring(), etc.)
+  * Lua: passes parts of the Lua testsuite (tested on fragment of "calls.lua")
+  * API: basic strings API (lua_pushlstring(), lua_tolstring())
+  * API: exposing Go funcs into Lua (lua_pushgofunction(), lua_dump())
+  * tools: Lua script for embedding Lua testsuite parts in Go unit tests (wrap-test.lua)
+  * API, Lua: string <-> number conversions
+
+What works since preview 1:
+
+  * API: creating/destroying new Lua state (luaL_newstate(), lua_close())
+  * API: basic integer operations on stack (lua_pushinteger(), lua_gettop(), lua_equal())
+  * API: running simple precompiled Lua code chunk (luaL_loadbuffer(), lua_call(),
+    tested on precompiled chunk "return 2+3")
+  * compiled and tested on: x86 (8c+8g), x64 (6c+6g), Windows/Linux
+  * tools: Lua script to simplify generation of Go+C wrappers for 
+    Lua API functions (internal/gen_wrappers.lua)
 
 
 WANTED / PLANS
 --------------
 
 Crucial:
+
   * to implement (leveraging Go fmt.Sprintf) a simplified C sprintf() function,
     in extent enough to cover the handful of use cases present in Lua sources
     (this shall enable more descriptive errors from Lua internals, and make it
     possible to dump the Lua stack to screen via lua_tostring() for easier debugging);
-  * to create a utility Lua script to simplify generation of Go+C wrappers for 
-    Lua API functions (there are still quite many of them, and adding each one
-    by hand is way too tedious);
-  * for the milestones below to be doable, to fix/implement all needed C standard 
-    library functions marked with FIXME (leveraging Go standard library where possible)
-    -- the embedded nyi() call shall emit a runtime panic when a function is
+  * to fix/implement all needed C standard library functions marked with FIXME
+    (leveraging Go standard library where possible)
+    -- the embedded nyi() call shall emit a runtime panic when a stub function is
     called, making them easier to spot.
-  * MILESTONE: get Lua lexer+parser to run (stop using noparser.c)
-  * MILESTONE: get the library to pass the Lua 5.1 testsuite
-    (http://lua-users.org/lists/lua-l/2006-03/msg00716.html)
+  * specifically, employ better algorithm for the strstr() function, which now
+    uses naive O(n*k) approach
+  * MILESTONE: enable rest of the Lua standard library
+  * MILESTONE: get goluago to pass the Lua 5.1 testsuite (lua5.1-tests/*.lua)
+  * MILESTONE: expose full Lua API in Go (except functions not compatible with Go)
 
 Would be nice-ies:
+
   * write unit tests for C standard library functions implemented for Lua;
   * improve C standard library
     * maybe use some non-GPL Open Source code (FreeBSD? some stdlib for embedded systems?);
@@ -57,7 +65,7 @@ most useful at this moment.
 BACKGROUND INFO
 ---------------
 
-Lua?
+**Lua?**
 
 http://lua.org
 
@@ -67,7 +75,7 @@ Easily embeddable (one of its core goals), mature (Lua 1.0 ~ 1993, many applicat
 worldwide since then). MIT-style licensed. Umm... oh, and I like it.
 
 
-Go Language?
+**Go Language?**
 
 http://golang.org
 
@@ -77,13 +85,13 @@ notable uses, including OS development (Unix, Plan9/Inferno). Highly portable
 (x86/x64, ARM; Linux/*nix, Windows, Mac OS X, other ports in progress), written
 (bootstrapped) in C. BSD-style licensed. Popularity hard to determine given short
 time on market, but has several nice and interesting features and properties
-(you can read: "I like it too").
+(and I like it too).
 
 
 INSTALLATION
 ------------
 
-You need a recent weekly of the Go language toolkit (see: http://weekly.golang.org).
+You need the Go language toolkit version 1 (see: http://golang.org).
 With the environment properly set up, type:
 
     go get github.com/akavel/goluago/internal

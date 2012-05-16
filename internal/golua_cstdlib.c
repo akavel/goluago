@@ -5,14 +5,72 @@
 #include "lualib.h"
 
 #include "time.h"
+#include "locale.h"
 
 #include "goctypes.h"
 
-void runtime·panicstring(int8*);
+void
+·lua_tonumber(uintptr L, uintptr index, uintptr pret) {
+    *((lua_Number*)pret) = lua_tonumber((lua_State*)L, (int)index);
+}
 
 void
-nyi(void) {
-    runtime·panicstring("not yet implemented");
+·lua_pushnumber(uintptr L, uintptr n) {
+    lua_pushnumber((lua_State*)L, *(lua_Number*)n);
+}
+
+static int
+stubwriter(lua_State* L, const void* p, size_t sz, void* ud) {
+    void ·go_stubwriter(uintptr, uintptr, uintptr, uintptr, uintptr);
+    int ret;
+    ·go_stubwriter((uintptr)L, (uintptr)p, (uintptr)sz, (uintptr)ud, (uintptr)&ret);
+    return ret;
+}
+
+void
+·lua_dump(uintptr L, uintptr dumpinfo, uintptr ret) {
+    ret = lua_dump((lua_State*)L, stubwriter, (void*)dumpinfo);
+    FLUSH(&ret);
+}
+
+static int
+stubcfunction(lua_State* L) {
+    void ·go_stubcfunction(uintptr, uintptr, uintptr);
+    int ret = 0;
+    void* f = lua_touserdata(L, lua_upvalueindex(1));
+    ·go_stubcfunction((uintptr)L, (uintptr)f, (uintptr)&ret);
+    return ret;
+}
+
+void
+·lua_pushgofunction(uintptr L, uintptr f) {
+    lua_pushlightuserdata((lua_State*)L, (void*)f);
+    lua_pushcclosure((lua_State*)L, stubcfunction, 1);
+}
+
+void *·Open_base;
+FILE* stderr;
+FILE* stdin;
+FILE* stdout;
+
+void
+·initlibs(void) {
+    ·Open_base = (void*)luaopen_base;
+    stdin = (FILE*)3;   // better not 0, because 0 means NULL means sometimes error
+    stdout = (FILE*)1;
+    stderr = (FILE*)2;
+}
+
+////////////////////
+
+void runtime·panicstring(int8*);
+
+static char* nyi_string = "0 not yet implemented";
+void
+nyi(char char_id) {
+    nyi_string[0] = char_id;
+    runtime·panicstring(nyi_string);
+    //runtime·panicstring("not yet implemented");
 }
 
 void
@@ -86,17 +144,16 @@ strlen(const char* s) {
 //FIXME
 double
 strtod(const char* nptr, char** endptr) {
-    nyi();
-    if (endptr) {
-        *endptr = (char*) nptr+1;
-    }
-    return 0;
+    void ·go_strtod(uintptr, uintptr, uintptr presult);
+    double result=0;
+    ·go_strtod((uintptr)nptr, (uintptr)endptr, (uintptr)&result);
+    return result;
 }
 
 //FIXME
 unsigned long
 strtoul(const char* str, char** endptr, int base) {
-    nyi();
+    nyi('1');
     if (endptr) {
         *endptr = (char*) str+1;
     }
@@ -274,6 +331,26 @@ int islower(int c) {
     return (c>='a' && c<='z');
 }
 
+//FIXME
+int isdigit(int c) {
+    return (c>='0' && c<='9');
+}
+
+//FIXME
+int isalpha(int c) {
+    return isupper(c) || islower(c);
+}
+
+//FIXME
+int isalnum(int c) {
+    return isalpha(c) || isdigit(c);
+}
+
+//FIXME
+int iscntrl(int c) {
+    return (c>=0 && c<=0x1f) || c==0x7f;
+}
+
 int ispunct(int c) {
     return c=='!' ||
         c=='\"' ||
@@ -358,7 +435,7 @@ time(time_t* tloc) {
 //FIXME
 time_t
 mktime(struct tm* timeptr) {
-    nyi();
+    nyi('2');
     return 0;
 }
 
@@ -367,21 +444,21 @@ struct tm timebuf_ = {0};
 //FIXME
 struct tm*
 localtime(const time_t* timer) {
-    nyi();
+    nyi('3');
     return &timebuf_;
 }
 
 //FIXME
 struct tm*
 gmtime(const time_t* timer) {
-    nyi();
+    nyi('4');
     return &timebuf_;
 }
 
 //FIXME
 clock_t
 clock(void) {
-    nyi();
+    nyi('5');
     return (clock_t) -1;
 }
 
@@ -389,74 +466,81 @@ clock(void) {
 #pragma textflag 7
 int
 sprintf(char* str, const char* format, ...) {
-    nyi();
-    return 0;
+    void ·go_sprintf(uintptr, uintptr, uintptr, uintptr);
+    va_list argp;
+    va_start(argp, format);
+    ·go_sprintf((uintptr)str, (uintptr)format, (uintptr)argp, (uintptr)_BIGWORD);
+    va_end(argp);
+    //nyi('6');
+    return 0; //FIXME
 }
-
-FILE* stderr;
-FILE* stdin;
 
 //FIXME
 #pragma textflag 7
 int
 fprintf(FILE* stream, const char* format, ...) {
-    nyi();
-    return 0;
+    void ·go_fprintf(uintptr, uintptr, uintptr, uintptr);
+    va_list argp;
+    va_start(argp, format);
+    ·go_fprintf((uintptr)stream, (uintptr)format, (uintptr)argp, (uintptr)_BIGWORD);
+    va_end(argp);
+    //nyi('7');
+    return 0; //FIXME
 }
 
 //FIXME
 int
 fclose(FILE* stream) {
-    nyi();
+    nyi('8');
     return 0;
 }
 
 //FIXME
 int
 ferror(FILE* stream) {
-    nyi();
+    nyi('9');
     return 0;
 }
 
 //FIXME
 FILE*
 freopen(const char* filename, const char* mode, FILE* stream) {
-    nyi();
+    nyi('a');
     return stderr;
 }
 
 //FIXME
 FILE*
 fopen(const char* filename, const char* mode) {
-    nyi();
+    nyi('b');
     return stderr;
 }
 
 //FIXME
 int
 getc(FILE* stream) {
-    nyi();
+    nyi('c');
     return -1;
 }
 
 //FIXME
 int
 ungetc(int ch, FILE* stream) {
-    nyi();
+    nyi('d');
     return -1;
 }
 
 //FIXME
 size_t
 fread(void* ptr, size_t size, size_t count, FILE* stream) {
-    nyi();
+    nyi('e');
     return 0;
 }
 
 //FIXME
 int
 feof(FILE* stream) {
-    nyi();
+    nyi('f');
     return -1;
 }
 
@@ -484,7 +568,7 @@ strstr(const char* haystack, const char* needle) {
 //FIXME
 char*
 strerror(int errnum) {
-    nyi();
+    nyi('g');
     return "(SOME ERROR)";
 }
 
@@ -498,3 +582,29 @@ strcmp(const char* s1, const char* s2) {
     return *s1 - *s2;
 }
 
+//FIXME
+int abs(int x) {
+    if (x<0)
+        return -x;
+    return x;
+}
+
+struct lconv a_locale = {"."};
+
+//FIXME
+struct lconv*
+localeconv(void) {
+    return &a_locale;
+}
+
+void ·goputc(uintptr, uintptr);
+
+//FIXME
+int
+fputs(const char* s, FILE* stream) {
+    while (*s) {
+        ·goputc((uintptr)*s, (uintptr)stream);
+        s++;
+    }
+    return 1; //FIXME
+}

@@ -31,7 +31,7 @@ int fflush(FILE*);
 char* fgets(char* s, int n, FILE*);
 FILE* fopen(const char*, const char*);
 int fprintf(FILE*, const char*, ...);
-char* fputs(const char*, FILE*);
+int fputs(const char*, FILE*);
 size_t fread(void*, size_t, size_t, FILE*);
 FILE* freopen(const char*, const char*, FILE*);
 int fscanf(FILE*, const char*, ...);

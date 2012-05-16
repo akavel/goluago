@@ -6,16 +6,6 @@
 
 #include "goctypes.h"
 
-void runtime·panicstring(int8*);
-
-void
-_assert_impl(int expression) {
-    if (expression) {
-        return;
-    }
-    runtime·panicstring("Assertion failed in Lua! bang...");
-}
-
 /*from: ldo.h:*/
 /* type of protected functions, to be ran by `runprotected' */
 typedef void (*Pfunc) (lua_State *L, void *ud);

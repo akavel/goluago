@@ -1,22 +1,40 @@
 package main
 
 import (
+	"fmt"
 	lua "github.com/akavel/goluago/internal"
+	"unsafe"
 )
+
+func newdumper() func(L lua.State, pbuf, size uintptr, userdata interface{}) int {
+	x := 0
+	return func(L lua.State, pbuf, size uintptr, userdata interface{}) int {
+		for i := uintptr(0); i < size; i++ {
+			print(fmt.Sprintf("%02x ", *((*byte)(unsafe.Pointer(pbuf + i)))))
+			if x%8 == 7 {
+				print("\n")
+			} else if x%4 == 3 {
+				print(" ")
+			}
+			x++
+		}
+		return 0
+	}
+}
 
 func main() {
 	println("hello wrld")
 	s := lua.Open()
-	t := s.GetTop()
+	t := s.Gettop()
 	println("top=", t)
-	s.PushInteger(5)
+	s.Pushinteger(5)
 	println("push 5")
-	println("top=", s.GetTop())
-	s.PushInteger(5)
+	println("top=", s.Gettop())
+	s.Pushinteger(5)
 	println("push 5")
-	s.PushInteger(0)
+	s.Pushinteger(0)
 	println("push 0")
-	println("top=", s.GetTop())
+	println("top=", s.Gettop())
 	println("equal(-1,-2)=", s.Equal(-1, -2))
 	println("equal(-2,-3)=", s.Equal(-2, -3))
 	println("equal(1,2)=", s.Equal(1, 2))
@@ -35,8 +53,50 @@ func main() {
 		panic(r)
 	}
 
+	println("dump:")
+	s.Dump(newdumper(), nil)
+	println()
+
 	s.Call(0, 1)
 	println("call")
-	println("top=", s.GetTop())
+	println("top=", s.Gettop())
 	println("equal(-1,1)=", s.Equal(-1, 1)) // expected: yes (i.e. peek()==5)
+
+	s.Pushlstring([]byte("foobar"))
+	println("pushlstring")
+	println("top=", s.Gettop())
+	println("tolstring(-1)=", string(s.Tolstring(-1)))
+
+	println("tolstring(-2)=", string(s.Tolstring(-2)))
+	println("tonumber(-2)=", s.Tonumber(-2))
+
+	println()
+	prog := "a=8 return a"
+	println("load '" + prog + "'")
+	r = s.Loadbuffer([]byte(prog), "chunk 2")
+	if r != 0 {
+		println("err: ", string(s.Tolstring(-1)))
+		panic(r)
+	}
+	println("dump:")
+	r = s.Dump(newdumper(), nil)
+	if r != 0 {
+		println("err: ", string(s.Tolstring(-1)))
+		panic(r)
+	}
+	s.Call(0, 1)
+	println("call")
+	println("top=", s.Gettop())
+	println("tolstring(-1)=", string(s.Tolstring(-1)))
+	println()
+
+	s.Pushgofunction(func(l lua.State) int {
+		println("hello goluago callback world!")
+		return 0
+	})
+	s.Call(0, 0)
+	println()
+
+	// PANIC and fprintf(stdio,...) test
+	println("lessthan(-2,-1)=", s.Lessthan(-3, -1))
 }
