@@ -1,4 +1,3 @@
-
 Library goluago aims to become a port of Lua 5.1 interpreter to Go Language Toolchain
 (first 8c/6c/5c, ultimately maybe pure Go).
 
@@ -9,24 +8,24 @@ completed successfully:
 STATUS
 ------
 
-What works - new in preview 2:
+### What works - new in preview 2:
 
-  * MILESTONE: parsing & compiling Lua scripts to bytecode (via luaL_loadbuffer())
-  * Lua: standard libraries: basic library (print(), ipairs(), assert(), loadstring(), etc.)
-  * Lua: passes parts of the Lua testsuite (tested on fragment of "calls.lua")
-  * API: basic strings API (lua_pushlstring(), lua_tolstring())
-  * API: exposing Go funcs into Lua (lua_pushgofunction(), lua_dump())
-  * tools: Lua script for embedding Lua testsuite parts in Go unit tests (wrap-test.lua)
-  * API, Lua: string <-> number conversions
+  * [MILESTONE] parsing & compiling Lua scripts to bytecode (via luaL_loadbuffer())
+  * [Lua] standard libraries: basic library (print(), ipairs(), assert(), loadstring(), etc.)
+  * [Lua] passes parts of the Lua testsuite (tested on fragment of "calls.lua")
+  * [API] basic strings API (lua_pushlstring(), lua_tolstring())
+  * [API] exposing Go funcs into Lua (lua_pushgofunction(), lua_dump())
+  * [tools] Lua script for embedding Lua testsuite parts in Go unit tests (wrap-test.lua)
+  * [API, Lua] string <-> number conversions
 
-What works since preview 1:
+### What works since preview 1:
 
-  * API: creating/destroying new Lua state (luaL_newstate(), lua_close())
-  * API: basic integer operations on stack (lua_pushinteger(), lua_gettop(), lua_equal())
-  * API: running simple precompiled Lua code chunk (luaL_loadbuffer(), lua_call(),
+  * [API] creating/destroying new Lua state (luaL_newstate(), lua_close())
+  * [API] basic integer operations on stack (lua_pushinteger(), lua_gettop(), lua_equal())
+  * [API] running simple precompiled Lua code chunk (luaL_loadbuffer(), lua_call(),
     tested on precompiled chunk "return 2+3")
   * compiled and tested on: x86 (8c+8g), x64 (6c+6g), Windows/Linux
-  * tools: Lua script to simplify generation of Go+C wrappers for 
+  * [tools] Lua script to simplify generation of Go+C wrappers for 
     Lua API functions (internal/gen_wrappers.lua)
 
 
@@ -34,7 +33,7 @@ What works since preview 1:
 WANTED / PLANS
 --------------
 
-Crucial:
+### Crucial:
 
   * to implement (leveraging Go fmt.Sprintf) a simplified C sprintf() function,
     in extent enough to cover the handful of use cases present in Lua sources
@@ -50,7 +49,7 @@ Crucial:
   * MILESTONE: get goluago to pass the Lua 5.1 testsuite (lua5.1-tests/*.lua)
   * MILESTONE: expose full Lua API in Go (except functions not compatible with Go)
 
-Would be nice-ies:
+### Would be nice-ies:
 
   * write unit tests for C standard library functions implemented for Lua;
   * improve C standard library
@@ -58,7 +57,7 @@ Would be nice-ies:
   * extract C standard library to separate package;
   * later, "ANSI C to Go translator", in extent needed by the Lua sources?
 
-NOTE: you're welcome to contribute anything if you fancy, and not necessarily
+**NOTE:** you're welcome to contribute anything if you fancy, and not necessarily
 from this list. The points above are mostly ideas as to what I believe would be 
 most useful at this moment.
 
@@ -66,7 +65,7 @@ most useful at this moment.
 BACKGROUND INFO
 ---------------
 
-**Lua?**
+### Lua?
 
 http://lua.org
 
@@ -76,7 +75,7 @@ Easily embeddable (one of its core goals), mature (Lua 1.0 ~ 1993, many applicat
 worldwide since then). MIT-style licensed. Umm... oh, and I like it.
 
 
-**Go Language?**
+### Go Language?
 
 http://golang.org
 
@@ -109,8 +108,8 @@ LICENSE
 -------
 
 
-Where not otherwise specified, MIT-licensed as:
-- - - - - - - - - - - - - - - - - - - - - - - -
+### Where not otherwise specified, MIT-licensed as:
+
 
 Copyright (c) 2011-2012 Mateusz Czapliński
 
@@ -133,8 +132,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-Lua code MIT-licensed as:
-- - - - - - - - - - - - -
+### Lua code MIT-licensed as:
+
 
 Copyright (C) 1994-2008 Lua.org, PUC-Rio.  All rights reserved.
 
