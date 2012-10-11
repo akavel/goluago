@@ -27,6 +27,10 @@ STATUS
   * [tools] Lua script to simplify generation of Go+C wrappers for 
     Lua API functions (internal/gen_wrappers.lua)
 
+See also: [Build & Testsuite Status](http://travis-ci.org/akavel/goluago) on Travis-CI.
+Please note, that the project is still officially at early stage of development, so if
+the testsuite fails, it's nothing unexpected; rather, it's very good news if *it builds*
+and *big part of the testsuite does succeed*!
 
 
 WANTED / PLANS
