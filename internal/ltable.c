@@ -203,7 +203,7 @@ static int computesizes (int nums[], int *narray) {
     if (a == *narray) break;  /* all elements already counted */
   }
   *narray = n;
-  lua_assert(*narray/2 <= na && na <= *narray);
+  lua_assert("@ltable.c:206: ", *narray/2 <= na && na <= *narray);
   return na;
 }
 
@@ -405,7 +405,7 @@ static TValue *newkey (lua_State *L, Table *t, const TValue *key) {
       rehash(L, t, key);  /* grow table */
       return luaH_set(L, t, key);  /* re-insert key into grown table */
     }
-    lua_assert(n != dummynode);
+    lua_assert("@ltable.c:408: ", n != dummynode);
     othern = mainposition(t, key2tval(mp));
     if (othern != mp) {  /* is colliding node out of its main position? */
       /* yes; move colliding node into free position */
@@ -424,7 +424,7 @@ static TValue *newkey (lua_State *L, Table *t, const TValue *key) {
   }
   gkey(mp)->value = key->value; gkey(mp)->tt = key->tt;
   luaC_barriert(L, t, key);
-  lua_assert(ttisnil(gval(mp)));
+  lua_assert("@ltable.c:427: ", ttisnil(gval(mp)));
   return gval(mp);
 }
 

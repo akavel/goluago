@@ -33,6 +33,11 @@ func (L State) Call(nargs, nresults int) {
 	lua_call(uintptr(L), uintptr(nargs), uintptr(nresults))
 }
 
+func lua_pcall(uintptr, uintptr, uintptr, uintptr) uintptr
+func (L State) Pcall(nargs, nresults, errfunc int) int {
+	return int(lua_pcall(uintptr(L), uintptr(nargs), uintptr(nresults), uintptr(errfunc)))
+}
+
 func lua_pushcclosure(uintptr, uintptr, uintptr)
 func (L State) Pushcclosure(f uintptr, n int) {
 	lua_pushcclosure(uintptr(L), uintptr(f), uintptr(n))

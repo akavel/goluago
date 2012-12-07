@@ -56,7 +56,7 @@ UpVal *luaF_findupval (lua_State *L, StkId level) {
   UpVal *p;
   UpVal *uv;
   while (*pp != NULL && (p = ngcotouv(*pp))->v >= level) {
-    lua_assert(p->v != &p->u.value);
+    lua_assert("@lfunc.c:59: ", p->v != &p->u.value);
     if (p->v == level) {  /* found a corresponding upvalue? */
       if (isdead(g, obj2gco(p)))  /* is it dead? */
         changewhite(obj2gco(p));  /* ressurect it */
@@ -74,13 +74,13 @@ UpVal *luaF_findupval (lua_State *L, StkId level) {
   uv->u.l.next = g->uvhead.u.l.next;
   uv->u.l.next->u.l.prev = uv;
   g->uvhead.u.l.next = uv;
-  lua_assert(uv->u.l.next->u.l.prev == uv && uv->u.l.prev->u.l.next == uv);
+  lua_assert("@lfunc.c:77: ", uv->u.l.next->u.l.prev == uv && uv->u.l.prev->u.l.next == uv);
   return uv;
 }
 
 
 static void unlinkupval (UpVal *uv) {
-  lua_assert(uv->u.l.next->u.l.prev == uv && uv->u.l.prev->u.l.next == uv);
+  lua_assert("@lfunc.c:83: ", uv->u.l.next->u.l.prev == uv && uv->u.l.prev->u.l.next == uv);
   uv->u.l.next->u.l.prev = uv->u.l.prev;  /* remove from `uvhead' list */
   uv->u.l.prev->u.l.next = uv->u.l.next;
 }
@@ -98,7 +98,7 @@ void luaF_close (lua_State *L, StkId level) {
   global_State *g = G(L);
   while (L->openupval != NULL && (uv = ngcotouv(L->openupval))->v >= level) {
     GCObject *o = obj2gco(uv);
-    lua_assert(!isblack(o) && uv->v != &uv->u.value);
+    lua_assert("@lfunc.c:101: ", !isblack(o) && uv->v != &uv->u.value);
     L->openupval = uv->next;  /* remove from `open' list */
     if (isdead(g, o))
       luaF_freeupval(L, uv);  /* free upvalue */
@@ -171,4 +171,3 @@ const char *luaF_getlocalname (const Proto *f, int local_number, int pc) {
   }
   return NULL;  /* not found */
 }
-

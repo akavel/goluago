@@ -215,7 +215,7 @@ static void hookf (lua_State *L, lua_Debug *ar) {
     if (ar->currentline >= 0)
       lua_pushinteger(L, ar->currentline);
     else lua_pushnil(L);
-    lua_assert(lua_getinfo(L, "lS", ar));
+    lua_assert("@ldblib.c:218: ", lua_getinfo(L, "lS", ar));
     lua_call(L, 2, 0);
   }
 }
@@ -394,4 +394,3 @@ LUALIB_API int luaopen_debug (lua_State *L) {
   luaL_register(L, LUA_DBLIBNAME, dblib);
   return 1;
 }
-

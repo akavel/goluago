@@ -243,7 +243,7 @@ LUA_API int lua_getinfo (lua_State *L, const char *what, lua_Debug *ar) {
   }
   else if (ar->i_ci != 0) {  /* no tail call? */
     ci = L->base_ci + ar->i_ci;
-    lua_assert(ttisfunction(ci->func));
+    lua_assert("@ldebug.c:246: ", ttisfunction(ci->func));
     f = clvalue(ci->func);
   }
   status = auxgetinfo(L, what, ar, f, ci);
@@ -504,11 +504,11 @@ static const char *getobjname (lua_State *L, CallInfo *ci, int stackpos,
     if (*name)  /* is a local? */
       return "local";
     i = symbexec(p, pc, stackpos);  /* try symbolic execution */
-    lua_assert(pc != -1);
+    lua_assert("@ldebug.c:507: ", pc != -1);
     switch (GET_OPCODE(i)) {
       case OP_GETGLOBAL: {
         int g = GETARG_Bx(i);  /* global index */
-        lua_assert(ttisstring(&p->k[g]));
+        lua_assert("@ldebug.c:511: ", ttisstring(&p->k[g]));
         *name = svalue(&p->k[g]);
         return "global";
       }
@@ -580,7 +580,7 @@ void luaG_typeerror (lua_State *L, const TValue *o, const char *op) {
 
 void luaG_concaterror (lua_State *L, StkId p1, StkId p2) {
   if (ttisstring(p1) || ttisnumber(p1)) p1 = p2;
-  lua_assert(!ttisstring(p1) && !ttisnumber(p1));
+  lua_assert("@ldebug.c:583: ", !ttisstring(p1) && !ttisnumber(p1));
   luaG_typeerror(L, p1, "concatenate");
 }
 
@@ -636,4 +636,3 @@ void luaG_runerror (lua_State *L, const char *fmt, ...) {
   va_end(argp);
   luaG_errormsg(L);
 }
-

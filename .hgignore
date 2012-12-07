@@ -1,0 +1,5 @@
+syntax: glob
+*.8
+*.exe
+*.a
+_testmain.go

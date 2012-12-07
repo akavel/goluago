@@ -186,7 +186,7 @@ static int indexupvalue (FuncState *fs, TString *name, expdesc *v) {
   int oldsize = f->sizeupvalues;
   for (i=0; i<f->nups; i++) {
     if (fs->upvalues[i].k == v->k && fs->upvalues[i].info == v->u.s.info) {
-      lua_assert(f->upvalues[i] == name);
+      lua_assert("@lparser.c:189: ", f->upvalues[i] == name);
       return i;
     }
   }
@@ -197,7 +197,7 @@ static int indexupvalue (FuncState *fs, TString *name, expdesc *v) {
   while (oldsize < f->sizeupvalues) f->upvalues[oldsize++] = NULL;
   f->upvalues[f->nups] = name;
   luaC_objbarrier(fs->L, f, name);
-  lua_assert(v->k == VLOCAL || v->k == VUPVAL);
+  lua_assert("@lparser.c:200: ", v->k == VLOCAL || v->k == VUPVAL);
   fs->upvalues[f->nups].k = cast_byte(v->k);
   fs->upvalues[f->nups].info = cast_byte(v->u.s.info);
   return f->nups++;
@@ -289,7 +289,7 @@ static void enterblock (FuncState *fs, BlockCnt *bl, lu_byte isbreakable) {
   bl->upval = 0;
   bl->previous = fs->bl;
   fs->bl = bl;
-  lua_assert(fs->freereg == fs->nactvar);
+  lua_assert("@lparser.c:292: ", fs->freereg == fs->nactvar);
 }
 
 
@@ -300,8 +300,8 @@ static void leaveblock (FuncState *fs) {
   if (bl->upval)
     luaK_codeABC(fs, OP_CLOSE, bl->nactvar, 0, 0);
   /* a block either controls scope or breaks (never both) */
-  lua_assert(!bl->isbreakable || !bl->upval);
-  lua_assert(bl->nactvar == fs->nactvar);
+  lua_assert("@lparser.c:303: ", !bl->isbreakable || !bl->upval);
+  lua_assert("@lparser.c:304: ", bl->nactvar == fs->nactvar);
   fs->freereg = fs->nactvar;  /* free registers */
   luaK_patchtohere(fs, bl->breaklist);
 }
@@ -371,8 +371,8 @@ static void close_func (LexState *ls) {
   f->sizelocvars = fs->nlocvars;
   luaM_reallocvector(L, f->upvalues, f->sizeupvalues, f->nups, TString *);
   f->sizeupvalues = f->nups;
-  lua_assert(luaG_checkcode(f));
-  lua_assert(fs->bl == NULL);
+  lua_assert("@lparser.c:374: ", luaG_checkcode(f));
+  lua_assert("@lparser.c:375: ", fs->bl == NULL);
   ls->fs = fs->prev;
   L->top -= 2;  /* remove table and prototype from the stack */
   /* last token read was anchored in defunct function; must reanchor it */
@@ -391,9 +391,9 @@ Proto *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff, const char *name) {
   chunk(&lexstate);
   check(&lexstate, TK_EOS);
   close_func(&lexstate);
-  lua_assert(funcstate.prev == NULL);
-  lua_assert(funcstate.f->nups == 0);
-  lua_assert(lexstate.fs == NULL);
+  lua_assert("@lparser.c:394: ", funcstate.prev == NULL);
+  lua_assert("@lparser.c:395: ", funcstate.f->nups == 0);
+  lua_assert("@lparser.c:396: ", lexstate.fs == NULL);
   return funcstate.f;
 }
 
@@ -508,7 +508,7 @@ static void constructor (LexState *ls, expdesc *t) {
   luaK_exp2nextreg(ls->fs, t);  /* fix it at stack top (for gc) */
   checknext(ls, '{');
   do {
-    lua_assert(cc.v.k == VVOID || cc.tostore > 0);
+    lua_assert("@lparser.c:511: ", cc.v.k == VVOID || cc.tostore > 0);
     if (ls->t.token == '}') break;
     closelistfield(fs, &cc);
     switch(ls->t.token) {
@@ -639,7 +639,7 @@ static void funcargs (LexState *ls, expdesc *f) {
       return;
     }
   }
-  lua_assert(f->k == VNONRELOC);
+  lua_assert("@lparser.c:642: ", f->k == VNONRELOC);
   base = f->u.s.info;  /* base register for call */
   if (hasmultret(args.k))
     nparams = LUA_MULTRET;  /* open call */
@@ -884,7 +884,7 @@ static void block (LexState *ls) {
   BlockCnt bl;
   enterblock(fs, &bl, 0);
   chunk(ls);
-  lua_assert(bl.breaklist == NO_JUMP);
+  lua_assert("@lparser.c:887: ", bl.breaklist == NO_JUMP);
   leaveblock(fs);
 }
 
@@ -1249,7 +1249,7 @@ static void retstat (LexState *ls) {
       luaK_setmultret(fs, &e);
       if (e.k == VCALL && nret == 1) {  /* tail call? */
         SET_OPCODE(getcode(fs,&e), OP_TAILCALL);
-        lua_assert(GETARG_A(getcode(fs,&e)) == fs->nactvar);
+        lua_assert("@lparser.c:1252: ", GETARG_A(getcode(fs,&e)) == fs->nactvar);
       }
       first = fs->nactvar;
       nret = LUA_MULTRET;  /* return all values */
@@ -1260,7 +1260,7 @@ static void retstat (LexState *ls) {
       else {
         luaK_exp2nextreg(fs, &e);  /* values must go to the `stack' */
         first = fs->nactvar;  /* return all `active' values */
-        lua_assert(nret == fs->freereg - first);
+        lua_assert("@lparser.c:1263: ", nret == fs->freereg - first);
       }
     }
   }
@@ -1329,7 +1329,7 @@ static void chunk (LexState *ls) {
   while (!islast && !block_follow(ls->t.token)) {
     islast = statement(ls);
     testnext(ls, ';');
-    lua_assert(ls->fs->f->maxstacksize >= ls->fs->freereg &&
+    lua_assert("@lparser.c:1332: ", ls->fs->f->maxstacksize >= ls->fs->freereg &&
                ls->fs->freereg >= ls->fs->nactvar);
     ls->fs->freereg = ls->fs->nactvar;  /* free registers */
   }

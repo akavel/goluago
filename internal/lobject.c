@@ -81,7 +81,7 @@ int luaO_rawequalObj (const TValue *t1, const TValue *t2) {
     case LUA_TLIGHTUSERDATA:
       return pvalue(t1) == pvalue(t2);
     default:
-      lua_assert(iscollectable(t1));
+      lua_assert("@lobject.c:84: ", iscollectable(t1));
       return gcvalue(t1) == gcvalue(t2);
   }
 }

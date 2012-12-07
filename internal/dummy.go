@@ -1,6 +1,7 @@
 package internal
 
 import (
+	_ "github.com/akavel/gostdc"
 	"unsafe"
 )
 
@@ -11,12 +12,18 @@ func Open() State {
 	return State(luaL_newstate())
 }
 
+func dumper_lua_newstate() uintptr
+func OpenDumped() State {
+	return State(dumper_lua_newstate())
+}
+
 //goc-simple: (L State) Close() = lua_close((lua_State*)L)
 //goc-simple: (L State) Gettop() int = lua_gettop((lua_State*)L) int
 //goc-simple: (L State) Pushinteger(n int) = lua_pushinteger((lua_State*)L, (lua_Integer)n)
 //goc-simple: (L State) Equal(i1, i2 int) int = lua_equal((lua_State*)L, (int)i1, (int)i2) int
 //goc-simple: (L State) Lessthan(index1, index2 int) int = lua_lessthan((lua_State*)L, (int)index1, (int)index2) int
 //goc-simple: (L State) Call(nargs, nresults int) = lua_call((lua_State*)L, (int)nargs, (int)nresults)
+//goc-simple: (L State) Pcall(nargs, nresults, errfunc int) int = lua_pcall((lua_State*)L, (int)nargs, (int)nresults, (int)errfunc) int
 //goc-simple: (L State) Pushcclosure(f uintptr, n int) = lua_pushcclosure((lua_State*)L, (lua_CFunction)f, (int)n)
 
 // FIXME: 'name' is currently ignored; in future, make sure
@@ -79,7 +86,13 @@ func (L State) Pushgofunction(f Function) {
 	lua_pushgofunction(uintptr(L), uintptr(unsafe.Pointer(&f)))
 }
 
-var Open_base uintptr
+var (
+	Open_base   uintptr
+	Open_debug  uintptr
+	Open_math   uintptr
+	Open_string uintptr
+	Open_table  uintptr
+)
 
 func initlibs()
 func init() {

@@ -106,10 +106,10 @@ typedef struct lua_TValue {
 ** for internal debug only
 */
 #define checkconsistency(obj) \
-  lua_assert(!iscollectable(obj) || (ttype(obj) == (obj)->value.gc->gch.tt))
+  lua_assert("checkcons: ", !iscollectable(obj) || (ttype(obj) == (obj)->value.gc->gch.tt))
 
 #define checkliveness(g,obj) \
-  lua_assert(!iscollectable(obj) || \
+  lua_assert("checkliv: ", !iscollectable(obj) || \
   ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(g, (obj)->value.gc)))
 
 

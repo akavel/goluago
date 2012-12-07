@@ -45,6 +45,12 @@ void
 }
 
 void
+·lua_pcall(uintptr L, uintptr nargs, uintptr nresults, uintptr errfunc, uintptr ret) {
+    ret = (uintptr) lua_pcall((lua_State*)L, (int)nargs, (int)nresults, (int)errfunc);
+    FLUSH(&ret);
+}
+
+void
 ·lua_pushcclosure(uintptr L, uintptr f, uintptr n) {
     lua_pushcclosure((lua_State*)L, (lua_CFunction)f, (int)n);
 }

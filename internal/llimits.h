@@ -54,8 +54,8 @@ typedef LUAI_UACNUMBER l_uacNumber;
 /* internal assertions for in-house debugging */
 #ifdef lua_assert
 
-#define check_exp(c,e)		(lua_assert(c), (e))
-#define api_check(l,e)		lua_assert(e)
+#define check_exp(c,e)		(lua_assert("check_exp: ", (c)), (e))
+#define api_check(s,l,e)		lua_assert((s), (e))
 
 #else
 

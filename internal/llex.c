@@ -66,7 +66,7 @@ void luaX_init (lua_State *L) {
   for (i=0; i<NUM_RESERVED; i++) {
     TString *ts = luaS_new(L, luaX_tokens[i]);
     luaS_fix(ts);  /* reserved words are never collected */
-    lua_assert(strlen(luaX_tokens[i])+1 <= TOKEN_LEN);
+    lua_assert("@llex.c:69: ", strlen(luaX_tokens[i])+1 <= TOKEN_LEN);
     ts->tsv.reserved = cast_byte(i+1);  /* reserved word */
   }
 }
@@ -77,7 +77,7 @@ void luaX_init (lua_State *L) {
 
 const char *luaX_token2str (LexState *ls, int token) {
   if (token < FIRST_RESERVED) {
-    lua_assert(token == cast(unsigned char, token));
+    lua_assert("@llex.c:80: ", token == cast(unsigned char, token));
     return (iscntrl(token)) ? luaO_pushfstring(ls->L, "char(%d)", token) :
                               luaO_pushfstring(ls->L, "%c", token);
   }
@@ -126,7 +126,7 @@ TString *luaX_newstring (LexState *ls, const char *str, size_t l) {
 
 static void inclinenumber (LexState *ls) {
   int old = ls->current;
-  lua_assert(currIsNewline(ls));
+  lua_assert("@llex.c:129: ", currIsNewline(ls));
   next(ls);  /* skip `\n' or `\r' */
   if (currIsNewline(ls) && ls->current != old)
     next(ls);  /* skip `\n\r' or `\r\n' */
@@ -190,7 +190,7 @@ static void trydecpoint (LexState *ls, SemInfo *seminfo) {
 
 /* LUA_NUMBER */
 static void read_numeral (LexState *ls, SemInfo *seminfo) {
-  lua_assert(isdigit(ls->current));
+  lua_assert("@llex.c:193: ", isdigit(ls->current));
   do {
     save_and_next(ls);
   } while (isdigit(ls->current) || ls->current == '.');
@@ -208,7 +208,7 @@ static void read_numeral (LexState *ls, SemInfo *seminfo) {
 static int skip_sep (LexState *ls) {
   int count = 0;
   int s = ls->current;
-  lua_assert(s == '[' || s == ']');
+  lua_assert("@llex.c:211: ", s == '[' || s == ']');
   save_and_next(ls);
   while (ls->current == '=') {
     save_and_next(ls);
@@ -409,7 +409,7 @@ static int llex (LexState *ls, SemInfo *seminfo) {
       }
       default: {
         if (isspace(ls->current)) {
-          lua_assert(!currIsNewline(ls));
+          lua_assert("@llex.c:412: ", !currIsNewline(ls));
           next(ls);
           continue;
         }
@@ -455,7 +455,6 @@ void luaX_next (LexState *ls) {
 
 
 void luaX_lookahead (LexState *ls) {
-  lua_assert(ls->lookahead.token == TK_EOS);
+  lua_assert("@llex.c:458: ", ls->lookahead.token == TK_EOS);
   ls->lookahead.token = llex(ls, &ls->lookahead.seminfo);
 }
-

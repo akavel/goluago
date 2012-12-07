@@ -1,6 +1,6 @@
-#ifndef __ERRNO_H
-#define __ERRNO_H
 
-extern int errno;
-
+#ifndef gostdc_errno_h
+#define gostdc_errno_h
 #endif
+#include "gostdc.h" 
+ 
