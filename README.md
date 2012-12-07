@@ -1,13 +1,13 @@
 Library goluago aims to become a port of Lua 5.1 interpreter to Go Language Toolchain
 (first 8c/6c/5c, ultimately maybe pure Go).
 
-The library is at early stage of development (not feature complete/not ready
-for production use), but some important goals were already completed successfully:
+The library is at **early stage** of development (not feature complete / **not ready
+for production** use), but some important goals were already completed successfully:
 
 STATUS
 ------
 
-### What works - new in preview 2:
+### What works - new in pre-alpha preview 2:
 
   * [MILESTONE] parsing & compiling Lua scripts to bytecode (via luaL_loadbuffer())
   * [Lua] standard libraries: basic library (print(), ipairs(), assert(), loadstring(), etc.)
@@ -17,7 +17,7 @@ STATUS
   * [tools] Lua script for embedding Lua testsuite parts in Go unit tests (wrap-test.lua)
   * [API, Lua] string <-> number conversions
 
-### What works since preview 1:
+### What works since pre-alpha preview 1:
 
   * [API] creating/destroying new Lua state (luaL_newstate(), lua_close())
   * [API] basic integer operations on stack (lua_pushinteger(), lua_gettop(), lua_equal())
@@ -27,11 +27,15 @@ STATUS
   * [tools] Lua script to simplify generation of Go+C wrappers for 
     Lua API functions (internal/gen_wrappers.lua)
 
-See also: [Build & Testsuite Status](http://travis-ci.org/akavel/goluago) on Travis-CI.
-Please note, that the project is still officially at early stage of development, so if
-the testsuite fails, it's nothing unexpected; rather, it's very good news if *it builds*
-and *big part of the testsuite does succeed*!
+Build & Testsuite Status: [![Build & Testsuite Status][2]][1]
 
+See also: [Build & Testsuite Status][1] on Travis-CI.
+Please note, that the project is still officially at early stage of development, so if
+the testsuite fails, it's nothing unexpected; rather, it's very good news that *it builds*
+and *big part of the testsuite does already succeed*!
+
+  [1]: http://travis-ci.org/akavel/goluago
+  [2]: https://secure.travis-ci.org/akavel/goluago.png?branch=master
 
 WANTED / PLANS
 --------------
