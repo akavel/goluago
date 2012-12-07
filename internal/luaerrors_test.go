@@ -5,11 +5,8 @@ print("testing errors")
 
 function doit (s)
   local f, msg = loadstring(s)
-	print('load', f, msg)
   if f == nil then return msg end
-	print('calling')
   local cond, msg = pcall(f)
-	print('pcall', cond, msg)
   return (not cond) and msg
 end
 
@@ -17,7 +14,7 @@ end
 function checkmessage (prog, msg)
   assert(string.find(doit(prog), msg, 1, true))
 end
-print 'bbb'
+
 function checksyntax (prog, extra, token, line)
   local msg = doit(prog)
   token = string.gsub(token, "(%p)", "%%%1")
@@ -30,7 +27,7 @@ end
 
 -- test error message with no extra info
 assert(doit("error('hi', 0)") == 'hi')
-print 'aaa'
+
 -- test error message with no info
 assert(doit("error()") == nil)
 
@@ -50,12 +47,12 @@ assert(doit"assert(nil)")
 assert(doit"a=math.sin\n(3)")
 assert(doit("function a (... , ...) end"))
 assert(doit("function a (, ...) end"))
-print 'ccc'
+
 checksyntax([[
   local a = {4
 
 ]], "'}' expected (to close '{' at line 1)", "<eof>", 3)
-print 'hhh'
+
 
 -- tests for better error messages
 
@@ -66,24 +63,21 @@ checkmessage("a={}; do local a=1 end a:bbbb(3)", "method 'bbbb'")
 checkmessage("local a={}; a.bbbb(3)", "field 'bbbb'")
 assert(not string.find(doit"a={13}; local bbbb=1; a[bbbb](3)", "'bbbb'"))
 checkmessage("a={13}; local bbbb=1; a[bbbb](3)", "number")
-print 'ggg'
+
 aaa = nil
 checkmessage("aaa.bbb:ddd(9)", "global 'aaa'")
 checkmessage("local aaa={bbb=1}; aaa.bbb:ddd(9)", "field 'bbb'")
 checkmessage("local aaa={bbb={}}; aaa.bbb:ddd(9)", "method 'ddd'")
 checkmessage("local a,b,c; (function () a = b+1 end)()", "upvalue 'b'")
 assert(not doit"local aaa={bbb={ddd=next}}; aaa.bbb:ddd(nil)")
-print 'fff'
+
 checkmessage("b=1; local aaa='a'; x=aaa+b", "local 'aaa'")
-print 'jjj'
 checkmessage("aaa={}; x=3/aaa", "global 'aaa'")
 checkmessage("aaa='2'; b=nil;x=aaa*b", "global 'b'")
-print 'iii'
 checkmessage("aaa={}; x=-aaa", "global 'aaa'")
 assert(not string.find(doit"aaa={}; x=(aaa or aaa)+(aaa and aaa)", "'aaa'"))
-print 'kkk'
 assert(not string.find(doit"aaa={}; (aaa or aaa)()", "'aaa'"))
-print 'ddd'
+
 checkmessage([[aaa=9
 repeat until 3==3
 local x=math.sin(math.cos(3))
@@ -108,7 +102,7 @@ while 1 do
   if nil then break end
   insert(prefix, a)
 end]], "global 'insert'")
-print 'eee'
+
 checkmessage([[  -- tail call
   return math.sin("a")
 ]], "'sin'")
