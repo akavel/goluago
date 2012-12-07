@@ -32,12 +32,22 @@ func TestRunSuite(t *T) {
 				l.Call(1, 0)
 			}
 
-			r := l.Loadbuffer([]byte(c.code), c.name)
+			r := l.Loadbuffer([]byte(`return function(s) return s..debug.traceback('', 2) end`), "")
+			if r != 0 {
+				t.Errorf("error %d in traceback chunk: %s", r, string(l.Tolstring(-1)))
+			}
+
+			r = l.Pcall(0, 1, 0)
+			if r != 0 {
+				t.Errorf("error %d in traceback call: %s", r, string(l.Tolstring(-1)))
+			}
+
+			r = l.Loadbuffer([]byte(c.code), c.name)
 			if r != 0 {
 				t.Errorf("error %d in %s: %s", r, c.name, string(l.Tolstring(-1)))
 			}
 
-			r = l.Pcall(0, 0, 0)
+			r = l.Pcall(0, 0, -2)
 			if r != 0 {
 				t.Errorf("error %d in %s: %s", r, c.name, string(l.Tolstring(-1)))
 			}
