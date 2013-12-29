@@ -1,13 +1,21 @@
 Library goluago aims to become a port of Lua 5.1 interpreter to Go Language Toolchain
 (first 8c/6c/5c, ultimately maybe pure Go).
 
-The library is at **early stage** of development (not feature complete / **not ready
+The library is at early stage of development (not feature complete / **not ready
 for production** use), but some important goals were already completed successfully:
 
 STATUS
 ------
 
-### What works - new in pre-alpha preview 2:
+### What works - new in alpha1 (2013-12-30):
+
+  * [MILESTONE] workaround in ldebug.c for a bug in Go toolchain's C compiler
+  * [MILESTONE][Lua] nearly all standard libraries available (with notable exception of file access)
+  * [Lua] most of the Lua Testsuite test code now passes successfully
+  * [API] wrapper for lua_pcall() added
+  * now uses new, more complete version of the http://github.com/akavel/gostdc library
+
+### What works since pre-alpha preview 2:
 
   * [MILESTONE] parsing & compiling Lua scripts to bytecode (via luaL_loadbuffer())
   * [Lua] standard libraries: basic library (print(), ipairs(), assert(), loadstring(), etc.)
@@ -42,25 +50,24 @@ WANTED / PLANS
 
 ### Crucial:
 
-  * to implement (leveraging Go fmt.Sprintf) a simplified C sprintf() function,
-    in extent enough to cover the handful of use cases present in Lua sources
-    (this shall enable more descriptive errors from Lua internals, and make it
-    possible to dump the Lua stack to screen via lua_tostring() for easier debugging);
-  * to fix/implement all needed C standard library functions marked with FIXME
+  * to fix/implement all the rest of needed C standard library functions
     (leveraging Go standard library where possible)
-    -- the embedded nyi() call shall emit a runtime panic when a stub function is
+    -- the embedded "panicstring" calls shall emit a runtime panic when a stub function is
     called, making them easier to spot.
-  * specifically, employ better algorithm for the strstr() function, which now
-    uses naive O(n*k) approach
   * MILESTONE: enable rest of the Lua standard library
   * MILESTONE: get goluago to pass the Lua 5.1 testsuite (lua5.1-tests/*.lua)
   * MILESTONE: expose full Lua API in Go (except functions not compatible with Go)
+  * ARM support, and other architectures later
 
 ### Would be nice-ies:
 
+  * write prettier interface on top of official Lua API
+    (maybe converge with http://github.com/stevedonovan/luar)
+  * Lua 5.2
   * write unit tests for C standard library functions implemented for Lua;
-  * improve C standard library
+  * improve C standard library in http://github.com/akavel/gostdc
     * maybe use some non-GPL Open Source code (FreeBSD? some stdlib for embedded systems?);
+    * try to go back to non-APE version of the code, to avoid the nonstandard Lucent license
   * extract C standard library to separate package;
   * later, "ANSI C to Go translator", in extent needed by the Lua sources?
 
@@ -79,7 +86,7 @@ http://lua.org
 Lua is a nice scripting language. Small, written in ANSI C, highly portable,
 reportedly fast. Especially popular among computer games producers, but not only.
 Easily embeddable (one of its core goals), mature (Lua 1.0 ~ 1993, many applications
-worldwide since then). MIT-style licensed. Umm... oh, and I like it.
+worldwide since then). MIT-style licensed.
 
 
 ### Go Language?
@@ -91,8 +98,7 @@ building and experimenting with programming languages (specifically C, Limbo), w
 notable uses, including OS development (Unix, Plan9/Inferno). Highly portable
 (x86/x64, ARM; Linux/*nix, Windows, Mac OS X, other ports in progress), written
 (bootstrapped) in C. BSD-style licensed. Popularity hard to determine given short
-time on market, but has several nice and interesting features and properties
-(and I like it too).
+time on market, but has several nice and interesting features and properties.
 
 
 INSTALLATION

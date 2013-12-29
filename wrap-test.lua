@@ -15,12 +15,15 @@ f:close()
 io.write((([[
 package internal
 
-var code_{TESTNAME} = `
-{DATA}
-`
+var code_{TESTNAME} = `{DATA}`
 ]]):gsub('{(%w+)}', {
   TESTNAME=basename,
-  DATA=data:gsub('`', '`+"`"+`'),
+  DATA=data:gsub('`', '`+"`"+`'):gsub('.', function(c)
+    if c:byte()>=128 then
+      return ('`+"\\x%x"+`'):format(c:byte())
+    end
+    return c
+  end),
 })))
 
 

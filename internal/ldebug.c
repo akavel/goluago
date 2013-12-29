@@ -269,7 +269,9 @@ LUA_API int lua_getinfo (lua_State *L, const char *what, lua_Debug *ar) {
 
 #define checkjump(pt,pc)	check(0 <= pc && pc < pt->sizecode)
 
-#define checkreg(pt,reg)	check((reg) < (pt)->maxstacksize)
+//#define checkreg(pt,reg)	check((reg) < (pt)->maxstacksize)
+// Fix for Go toolchain's C compiler (cc), see http://golang.org/issue/7027 :
+#define checkreg(pt,reg)	check((reg) < ((int)((pt)->maxstacksize)))
 
 
 

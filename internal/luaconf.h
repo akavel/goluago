@@ -367,8 +367,8 @@
 #define LUA_COMPAT_OPENLIB
 
 /* MC: added lua_assert definition for internal debugging of Lua */
-#include <assert.h>
-#define lua_assert(x) assert(x)
+void runtime·panicstring(int8*);
+#define lua_assert(x) ((void)((x) || (runtime·panicstring("lua_assert failed"), 1)))
 
 /*
 @@ luai_apicheck is the assert macro used by the Lua-C API.
