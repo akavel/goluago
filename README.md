@@ -124,7 +124,7 @@ LICENSE
 ### Where not otherwise specified, MIT-licensed as:
 
 
-Copyright (c) 2011-2012 Mateusz Czapliński
+Copyright (c) 2011-2013 Mateusz Czapliński
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
