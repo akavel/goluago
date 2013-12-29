@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"fmt"
-	lua "hg.akavel.com/go-lua/internal"
+	lua "github.com/akavel/goluago/internal"
 	"io/ioutil"
 	"runtime/debug"
 )
