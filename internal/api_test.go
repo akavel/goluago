@@ -54,7 +54,7 @@ func TestNumStrConv(t *T) {
 	for i, x := range cases {
 		l := Open()
 		l.Pushnumber(x.n)
-		s := string(l.Tolstring(-1))
+		s := string(l.Tostring(-1))
 		if s != x.s {
 			t.Error("case", i, "wrong string", s)
 		}
@@ -63,7 +63,7 @@ func TestNumStrConv(t *T) {
 
 	for i, x := range cases {
 		l := Open()
-		l.Pushlstring([]byte(x.s))
+		l.Pushstring([]byte(x.s))
 		n := l.Tonumber(-1)
 		if n != x.n {
 			t.Error("case", i, "wrong number", n)
@@ -96,7 +96,7 @@ func TestParseAndRun(t *T) {
 		}
 
 		for j := range c.stack {
-			res := string(l.Tolstring(j + 1))
+			res := string(l.Tostring(j + 1))
 			if res != c.stack[j] {
 				t.Error("case", i, "stack position", j, "got", res)
 			}
@@ -119,18 +119,18 @@ func TestGetfieldGetglobal(t *T) {
 
 	l.Getglobal("t")
 	l.Getfield(-1, "k")
-	if x := l.Tonumber(-1); x != 15 {
-		t.Fatal("Tonumber=", x)
+	if x := l.Tointeger(-1); x != 15 {
+		t.Fatal("Tointeger=", x)
 	}
 }
 
-func TestPushlstringTolstring(t *T) {
+func TestPushstringTostring(t *T) {
 	l := Open()
 	defer l.Close()
 
-	l.Pushlstring([]byte("foo"))
-	if x := string(l.Tolstring(-1)); x != "foo" {
-		t.Fatal("Tolstring=", x)
+	l.Pushstring([]byte("foo"))
+	if x := string(l.Tostring(-1)); x != "foo" {
+		t.Fatal("Tostring=", x)
 	}
 }
 
@@ -149,7 +149,7 @@ func TestGetupvalue(t *T) {
 	if name != "u" {
 		t.Error("Getupvalue=", name)
 	}
-	top := l.Tonumber(-1)
+	top := l.Tointeger(-1)
 	if top != 10 {
 		t.Error("upvalue=", top)
 	}
@@ -159,9 +159,8 @@ func TestSetmetatable(t *T) {
 	l := Open()
 	defer l.Close()
 
-	l.pushcclosure(Open_base, 0) //FIXME: cheating here!
-	l.Pushlstring([]byte(""))
-	l.Call(1, 0)
+	l.Pushgofunction(Open_base)
+	l.Call(0, 0)
 
 	r := l.Loadbuffer([]byte(`m={i=10} t={}`), "test")
 	if r != 0 {
@@ -180,8 +179,38 @@ func TestSetmetatable(t *T) {
 	l.Call(0, 0)
 
 	l.Getglobal("r")
-	result := l.Tonumber(-1)
+	result := l.Tointeger(-1)
 	if result != 1 {
 		t.Error("result=", result)
+	}
+}
+
+func TestLoad(t *T) {
+	l := Open()
+	defer l.Close()
+
+	data := []string{"a=", "3", " ", "return a*2", ""}
+	r := l.Load(func(L State) []byte {
+		if len(data) == 0 {
+			return nil
+		}
+		var h string
+		h, data = data[0], data[1:]
+		return []byte(h)
+	}, "somechunk")
+	if r != 0 {
+		t.Fatal("Load=", r)
+	}
+
+	l.Call(0, 1)
+	x := l.Tointeger(-1)
+	if x != 6 {
+		t.Error("expected return 6, got", x)
+	}
+
+	l.Getglobal("a")
+	a := l.Tointeger(-1)
+	if a != 3 {
+		t.Error("expected a=3, got", a)
 	}
 }

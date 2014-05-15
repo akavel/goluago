@@ -2,7 +2,11 @@
 
 package internal
 
-func luaL_newstate() uintptr
+func lua_upvalueindex(uintptr) uintptr
+func Upvalueindex(index int) int {
+	return int(lua_upvalueindex(uintptr(index)))
+}
+
 func lua_close(uintptr)
 func (L State) Close() {
 	lua_close(uintptr(L))
@@ -73,6 +77,11 @@ func (L State) Isboolean(index int) int {
 	return int(lua_isboolean(uintptr(L), uintptr(index)))
 }
 
+func lua_iscfunction(uintptr, uintptr) uintptr
+func (L State) Iscfunction(index int) int {
+	return int(lua_iscfunction(uintptr(L), uintptr(index)))
+}
+
 func lua_isfunction(uintptr, uintptr) uintptr
 func (L State) Isfunction(index int) int {
 	return int(lua_isfunction(uintptr(L), uintptr(index)))
@@ -138,6 +147,11 @@ func (L State) Next(index int) {
 	lua_next(uintptr(L), uintptr(index))
 }
 
+func lua_objlen(uintptr, uintptr) uintptr
+func (L State) Objlen(index int) int {
+	return int(lua_objlen(uintptr(L), uintptr(index)))
+}
+
 func lua_pcall(uintptr, uintptr, uintptr, uintptr) uintptr
 func (L State) Pcall(nargs, nresults, errfunc int) int {
 	return int(lua_pcall(uintptr(L), uintptr(nargs), uintptr(nresults), uintptr(errfunc)))
@@ -161,6 +175,11 @@ func (L State) pushcclosure(f uintptr, n int) {
 func lua_pushinteger(uintptr, uintptr)
 func (L State) Pushinteger(n int) {
 	lua_pushinteger(uintptr(L), uintptr(n))
+}
+
+func lua_pushlightuserdata(uintptr, uintptr)
+func (L State) Pushlightuserdata(p uintptr) {
+	lua_pushlightuserdata(uintptr(L), uintptr(p))
 }
 
 func lua_pushnil(uintptr)
@@ -198,14 +217,80 @@ func (L State) Rawseti(index, n int) {
 	lua_rawseti(uintptr(L), uintptr(index), uintptr(n))
 }
 
+func lua_remove(uintptr, uintptr)
+func (L State) Remove(index int) {
+	lua_remove(uintptr(L), uintptr(index))
+}
+
+func lua_replace(uintptr, uintptr)
+func (L State) Replace(index int) {
+	lua_replace(uintptr(L), uintptr(index))
+}
+
+func lua_setfenv(uintptr, uintptr)
+func (L State) Setfenv(index int) {
+	lua_setfenv(uintptr(L), uintptr(index))
+}
+
 func lua_setmetatable(uintptr, uintptr)
 func (L State) Setmetatable(index int) {
 	lua_setmetatable(uintptr(L), uintptr(index))
 }
 
+func lua_settable(uintptr, uintptr)
+func (L State) Settable(index int) {
+	lua_settable(uintptr(L), uintptr(index))
+}
+
+func lua_settop(uintptr, uintptr)
+func (L State) Settop(index int) {
+	lua_settop(uintptr(L), uintptr(index))
+}
+
+func lua_status(uintptr) uintptr
+func (L State) Status() int {
+	return int(lua_status(uintptr(L)))
+}
+
+func lua_tointeger(uintptr, uintptr) uintptr
+func (L State) Tointeger(index int) int {
+	return int(lua_tointeger(uintptr(L), uintptr(index)))
+}
+
+func lua_type(uintptr, uintptr) uintptr
+func (L State) Type(index int) int {
+	return int(lua_type(uintptr(L), uintptr(index)))
+}
+
+func lua_touserdata(uintptr, uintptr) uintptr
+func (L State) Touserdata(index int) uintptr {
+	return uintptr(lua_touserdata(uintptr(L), uintptr(index)))
+}
+
 func luaL_loadbuffer(uintptr, uintptr, uintptr, uintptr) uintptr
 func lua_pushlstring(uintptr, uintptr, uintptr)
 func lua_tolstring(uintptr, uintptr, uintptr) uintptr
+func lua_toboolean(uintptr, uintptr) uintptr
+func lua_setglobal(uintptr, uintptr)
+func lua_setfield(uintptr, uintptr, uintptr)
 func lua_getfield(uintptr, uintptr, uintptr)
 func lua_getglobal(uintptr, uintptr)
 func lua_getupvalue(uintptr, uintptr, uintptr) uintptr
+func lua_typename(uintptr, uintptr) uintptr
+func luaL_newstate() uintptr
+func luaL_where(uintptr, uintptr)
+func (L State) LWhere(lvl int) {
+	luaL_where(uintptr(L), uintptr(lvl))
+}
+
+func luaL_ref(uintptr, uintptr) uintptr
+func (L State) LRef(t int) int {
+	return int(luaL_ref(uintptr(L), uintptr(t)))
+}
+
+func luaL_unref(uintptr, uintptr, uintptr)
+func (L State) LUnref(t, ref int) {
+	luaL_unref(uintptr(L), uintptr(t), uintptr(ref))
+}
+
+func luaL_optlstring(uintptr, uintptr, uintptr, uintptr) uintptr

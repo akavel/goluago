@@ -2,7 +2,7 @@
 Script tries to build a text-file with mapping of Lua API functions to their Go counterparts in goluago.
 ]]--
 
-local GOC_FILE = 'golua_api.go'
+local GOC_FILES = {'golua_api.go', 'golua_lapi.go'}
 local HTML_OUTFILE = '../list-lua-api.html'
 local README_OUTFILE = '../README.md'
 local API_TESTFILES = {'api_test.go'}
@@ -25,24 +25,32 @@ function main()
 		end
 	end
 	
-	local go_api = {}
+	local go_api_has_test = {}
 
 	-- collect simple mappings
-	for line in io.lines(GOC_FILE) do
+	for _, goc_file in ipairs(GOC_FILES) do
+	for line in io.lines(goc_file) do
 		--local entry = line:match '^//goc-simple: %(L State%) ([A-Z][a-z]+).- = (luaL?_[a-z]+)'
-		local goname, cname = line:match '^//goc%-simple: %(L State%) ([A-Z][a-z]+).-=.-(luaL?_[a-z]+)'
+		local goname, cname = line:match '^//goc%-simple: %(L State%) ([A-Z][A-Za-z]+).-=.-(luaL?_[a-z]+)'
+		local goname2, cname2 = line:match '^//goc%-simple: ([A-Z][A-Za-z]+).-=.-(luaL?_[a-z]+)'
 		if goname then
 			--print(goname, cname)
 			goname = 'State.' .. goname
+		elseif goname2 then
+			goname, cname = goname2, cname2
+		end
+		if goname then
+			--print(goname, cname)
 			c_api[cname] = c_api[cname] or {special=true}
 			c_api[cname].goname = goname
-			go_api[goname] = cname
 		end
+	end
 	end
 	
 	-- collect elaborate mappings
 	local in_gofunc = nil
-	for line in io.lines(GOC_FILE) do
+	for _, goc_file in ipairs(GOC_FILES) do
+	for line in io.lines(goc_file) do
 		local cfunc = line:match '[^%w_](luaL?_%w+)%('
 		if line:match '^func.*{' then
 			line = line:gsub('^func ', '')
@@ -60,15 +68,15 @@ function main()
 		elseif in_gofunc and cfunc then
 			c_api[cfunc] = c_api[cfunc] or {special=true}
 			c_api[cfunc].goname = in_gofunc
-			go_api[in_gofunc] = cfunc
 		elseif line:match '^}' then
 			in_gofunc = nil
 		end
 	end
+	end
 	
 	-- try to find out which APIs are tested
 	-- NOTE: very hackish for now, freely modify/rewrite if needed
-	c_api[go_api['Open']].has_test = true
+	go_api_has_test['Open'] = true
 	for _, fname in ipairs(API_TESTFILES) do
 		local lua_state = nil
 		for line in io.lines(fname) do
@@ -76,13 +84,13 @@ function main()
 			
 			local lua_func
 			if lua_state then
-				lua_func = line:match('[^%w_]' .. lua_state .. '%.([A-Z][a-z]+)%(')
+				lua_func = line:match('[^%w_]' .. lua_state .. '%.([A-Z][A-Za-z]+)%(')
 			end
 			
 			if line:match '^}' then
 				lua_state = nil
 			elseif lua_func then
-				c_api[go_api['State.' .. lua_func]].has_test = true
+				go_api_has_test['State.' .. lua_func] = true
 			end
 		end
 	end
@@ -108,8 +116,9 @@ function main()
 		else
 			stats.all = stats.all + 1
 		end
-		if entry.has_test then
+		if entry.goname and go_api_has_test[entry.goname] then
 			stats.tested = stats.tested + 1
+			entry.has_test = true
 		end
 	end
 	results.stats = stats

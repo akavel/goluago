@@ -6,8 +6,8 @@
 #include "goctypes.h"
 
 void
-·luaL_newstate(uintptr ret) {
-    ret = (uintptr) luaL_newstate();
+·lua_upvalueindex(uintptr index, uintptr ret) {
+    ret = (uintptr) lua_upvalueindex((int)index);
     FLUSH(&ret);
 }
 
@@ -89,6 +89,12 @@ void
 }
 
 void
+·lua_iscfunction(uintptr L, uintptr index, uintptr ret) {
+    ret = (uintptr) lua_iscfunction((lua_State*)L, (int)index);
+    FLUSH(&ret);
+}
+
+void
 ·lua_isfunction(uintptr L, uintptr index, uintptr ret) {
     ret = (uintptr) lua_isfunction((lua_State*)L, (int)index);
     FLUSH(&ret);
@@ -165,6 +171,12 @@ void
 }
 
 void
+·lua_objlen(uintptr L, uintptr index, uintptr ret) {
+    ret = (uintptr) lua_objlen((lua_State*)L, (int)index);
+    FLUSH(&ret);
+}
+
+void
 ·lua_pcall(uintptr L, uintptr nargs, uintptr nresults, uintptr errfunc, uintptr ret) {
     ret = (uintptr) lua_pcall((lua_State*)L, (int)nargs, (int)nresults, (int)errfunc);
     FLUSH(&ret);
@@ -188,6 +200,11 @@ void
 void
 ·lua_pushinteger(uintptr L, uintptr n) {
     lua_pushinteger((lua_State*)L, (lua_Integer)n);
+}
+
+void
+·lua_pushlightuserdata(uintptr L, uintptr p) {
+    lua_pushlightuserdata((lua_State*)L, (void*)p);
 }
 
 void
@@ -227,8 +244,57 @@ void
 }
 
 void
+·lua_remove(uintptr L, uintptr index) {
+    lua_remove((lua_State*)L, (int)index);
+}
+
+void
+·lua_replace(uintptr L, uintptr index) {
+    lua_replace((lua_State*)L, (int)index);
+}
+
+void
+·lua_setfenv(uintptr L, uintptr index) {
+    lua_setfenv((lua_State*)L, (int)index);
+}
+
+void
 ·lua_setmetatable(uintptr L, uintptr index) {
     lua_setmetatable((lua_State*)L, (int)index);
+}
+
+void
+·lua_settable(uintptr L, uintptr index) {
+    lua_settable((lua_State*)L, (int)index);
+}
+
+void
+·lua_settop(uintptr L, uintptr index) {
+    lua_settop((lua_State*)L, (int)index);
+}
+
+void
+·lua_status(uintptr L, uintptr ret) {
+    ret = (uintptr) lua_status((lua_State*)L);
+    FLUSH(&ret);
+}
+
+void
+·lua_tointeger(uintptr L, uintptr index, uintptr ret) {
+    ret = (uintptr) lua_tointeger((lua_State*)L, (int)index);
+    FLUSH(&ret);
+}
+
+void
+·lua_type(uintptr L, uintptr index, uintptr ret) {
+    ret = (uintptr) lua_type((lua_State*)L, (int)index);
+    FLUSH(&ret);
+}
+
+void
+·lua_touserdata(uintptr L, uintptr index, uintptr ret) {
+    ret = (uintptr) lua_touserdata((lua_State*)L, (int)index);
+    FLUSH(&ret);
 }
 
 void
@@ -249,6 +315,22 @@ void
 }
 
 void
+·lua_toboolean(uintptr L, uintptr index, uintptr ret) {
+    ret = (uintptr) lua_toboolean((lua_State*)L, (int)index);
+    FLUSH(&ret);
+}
+
+void
+·lua_setglobal(uintptr L, uintptr name) {
+    lua_setglobal((lua_State*)L, (const char*)name);
+}
+
+void
+·lua_setfield(uintptr L, uintptr index, uintptr k) {
+    lua_setfield((lua_State*)L, (int)index, (const char*)k);
+}
+
+void
 ·lua_getfield(uintptr L, uintptr index, uintptr k) {
     lua_getfield((lua_State*)L, (int)index, (const char*)k);
 }
@@ -261,6 +343,40 @@ void
 void
 ·lua_getupvalue(uintptr L, uintptr funcindex, uintptr n, uintptr ret) {
     ret = (uintptr) lua_getupvalue((lua_State*)L, (int)funcindex, (int)n);
+    FLUSH(&ret);
+}
+
+void
+·lua_typename(uintptr L, uintptr tp, uintptr ret) {
+    ret = (uintptr) lua_typename((lua_State*)L, (int)tp);
+    FLUSH(&ret);
+}
+
+void
+·luaL_newstate(uintptr ret) {
+    ret = (uintptr) luaL_newstate();
+    FLUSH(&ret);
+}
+
+void
+·luaL_where(uintptr L, uintptr lvl) {
+    luaL_where((lua_State*)L, (int)lvl);
+}
+
+void
+·luaL_ref(uintptr L, uintptr t, uintptr ret) {
+    ret = (uintptr) luaL_ref((lua_State*)L, (int)t);
+    FLUSH(&ret);
+}
+
+void
+·luaL_unref(uintptr L, uintptr t, uintptr ref) {
+    luaL_unref((lua_State*)L, (int)t, (int)ref);
+}
+
+void
+·luaL_optlstring(uintptr L, uintptr narg, uintptr d, uintptr len, uintptr ret) {
+    ret = (uintptr) luaL_optlstring((lua_State*)L, (int)narg, (const char*)d, (size_t*)len);
     FLUSH(&ret);
 }
 

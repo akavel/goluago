@@ -15,9 +15,16 @@ void
 }
 
 void
+·luaL_optnumber(uintptr L, uintptr narg, uintptr pd, uintptr pret) {
+    *((lua_Number*)pret) = luaL_optnumber((lua_State*)L, (int)narg, *((lua_Number*)pd));
+}
+
+void
 ·lua_pushnumber(uintptr L, uintptr n) {
     lua_pushnumber((lua_State*)L, *(lua_Number*)n);
 }
+
+/*******/
 
 static int
 stubwriter(lua_State* L, const void* p, size_t sz, void* ud) {
@@ -32,6 +39,24 @@ void
     ret = lua_dump((lua_State*)L, stubwriter, (void*)dumpinfo);
     FLUSH(&ret);
 }
+
+/*******/
+
+static const char*
+stubreader(lua_State* L, void* data, size_t* size) {
+    void ·go_stubreader(uintptr, uintptr, uintptr, uintptr);
+    const char* ret;
+    ·go_stubreader((uintptr)L, (uintptr)data, (uintptr)size, (uintptr)&ret);
+    return ret;
+}
+
+void
+·lua_load(uintptr L, uintptr pdata, uintptr pchunkname, uintptr ret) {
+    ret = lua_load((lua_State*)L, stubreader, (void*)pdata, (const char*)pchunkname);
+    FLUSH(&ret);
+}
+
+/*******/
 
 static int
 stubcfunction(lua_State* L) {
@@ -48,21 +73,23 @@ void
     lua_pushcclosure((lua_State*)L, stubcfunction, 1);
 }
 
-void *·Open_base;
-void *·Open_debug;
-void *·Open_math;
-void *·Open_string;
-void *·Open_table;
-void *·Open_io;
-void *·Open_os;
+/*******/
+
+void *·open_base;
+void *·open_debug;
+void *·open_math;
+void *·open_string;
+void *·open_table;
+void *·open_io;
+void *·open_os;
 
 void
 ·initlibs(void) {
-    ·Open_base = (void*)luaopen_base;
-    ·Open_debug = (void*)luaopen_debug;
-    ·Open_math = (void*)luaopen_math;
-    ·Open_string = (void*)luaopen_string;
-    ·Open_table = (void*)luaopen_table;
-    ·Open_io = (void*)luaopen_io;
-    ·Open_os = (void*)luaopen_os;
+    ·open_base = (void*)luaopen_base;
+    ·open_debug = (void*)luaopen_debug;
+    ·open_math = (void*)luaopen_math;
+    ·open_string = (void*)luaopen_string;
+    ·open_table = (void*)luaopen_table;
+    ·open_io = (void*)luaopen_io;
+    ·open_os = (void*)luaopen_os;
 }

@@ -45,3 +45,11 @@ func go_stubcfunction(L_, f_, pret_ uintptr) {
 	pret := (*int32)(unsafe.Pointer(pret_))
 	*pret = (*f)(L)
 }
+
+func go_stubreader(L_, pdata, psize_, pret_ uintptr) {
+	L := State(L_)
+	li := *((*loadinfo)(unsafe.Pointer(pdata)))
+	pret := (*uintptr)(unsafe.Pointer(pret_))
+	psize := (*int32)(unsafe.Pointer(psize_))
+	*pret, *psize = li.read(L)
+}

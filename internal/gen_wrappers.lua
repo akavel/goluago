@@ -1,5 +1,5 @@
 
-local input = 'golua_api.go'
+local inputs = {'golua_api.go', 'golua_lapi.go'}
 
 -----------------
 
@@ -76,7 +76,7 @@ end
 
 ----------------
 
-for l in io.lines(input) do
+function decode_line(l)
     local l, func_simple = decode_goc_simple(l)
     local func = decode_goc(l)
     if func then
@@ -133,4 +133,12 @@ for l in io.lines(input) do
             end
         end
     end
+end
+
+----------------
+
+for _, input in ipairs(inputs) do
+	for l in io.lines(input) do
+		decode_line(l)
+	end
 end

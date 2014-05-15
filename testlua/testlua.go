@@ -73,12 +73,12 @@ func main() {
 	println("top=", s.Gettop())
 	println("equal(-1,1)=", s.Equal(-1, 1)) // expected: yes (i.e. peek()==5)
 
-	s.Pushlstring([]byte("foobar"))
+	s.Pushstring([]byte("foobar"))
 	println("pushlstring")
 	println("top=", s.Gettop())
-	println("tolstring(-1)=", string(s.Tolstring(-1)))
+	println("Tostring(-1)=", string(s.Tostring(-1)))
 
-	println("tolstring(-2)=", string(s.Tolstring(-2)))
+	println("Tostring(-2)=", string(s.Tostring(-2)))
 	println("tonumber(-2)=", s.Tonumber(-2))
 
 	println()
@@ -86,20 +86,20 @@ func main() {
 	println("load '" + prog + "'")
 	r = s.Loadbuffer([]byte(prog), "chunk 2")
 	if r != 0 {
-		println("err: ", string(s.Tolstring(-1)))
+		println("err: ", string(s.Tostring(-1)))
 		panic(r)
 	}
 	println("dump:")
 	r = s.Dump(newdumper(), nil)
 	println()
 	if r != 0 {
-		println("err: ", string(s.Tolstring(-1)))
+		println("err: ", string(s.Tostring(-1)))
 		panic(r)
 	}
 	s.Call(0, 1)
 	println("call")
 	println("top=", s.Gettop())
-	println("tolstring(-1)=", string(s.Tolstring(-1)))
+	println("Tostring(-1)=", string(s.Tostring(-1)))
 	println()
 
 	s.Pushgofunction(func(l lua.State) int32 {
@@ -114,20 +114,20 @@ func main() {
 	println("load '" + prog + "'")
 	r = s.Loadbuffer([]byte(prog), "chunk x")
 	if r != 0 {
-		println("err: ", string(s.Tolstring(-1)))
+		println("err: ", string(s.Tostring(-1)))
 		panic(r)
 	}
 	println("dump:")
 	r = s.Dump(newdumper(), nil)
 	println()
 	if r != 0 {
-		println("err: ", string(s.Tolstring(-1)))
+		println("err: ", string(s.Tostring(-1)))
 		panic(r)
 	}
 	s.Call(0, 0)
 	println("call")
 	println("top=", s.Gettop())
-	println("tolstring(-1)=", string(s.Tolstring(-1)))
+	println("Tostring(-1)=", string(s.Tostring(-1)))
 	println()
 
 	println()
@@ -145,20 +145,20 @@ func main() {
 	println("load '" + prog + "'")
 	r = s.Loadbuffer([]byte(prog), "chunk 3")
 	if r != 0 {
-		println("err: ", string(s.Tolstring(-1)))
+		println("err: ", string(s.Tostring(-1)))
 		panic(r)
 	}
 	println("dump:")
 	r = s.Dump(newdumper(), nil)
 	println()
 	if r != 0 {
-		println("err: ", string(s.Tolstring(-1)))
+		println("err: ", string(s.Tostring(-1)))
 		panic(r)
 	}
 	s.Call(0, 0)
 	println("call")
 	println("top=", s.Gettop())
-	println("tolstring(-1)=", string(s.Tolstring(-1)))
+	println("Tostring(-1)=", string(s.Tostring(-1)))
 	println()
 
 	// PANIC and fprintf(stdio,...) test
