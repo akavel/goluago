@@ -106,3 +106,82 @@ func TestParseAndRun(t *T) {
 		l.Close()
 	}
 }
+
+func TestGetfieldGetglobal(t *T) {
+	l := Open()
+	defer l.Close()
+
+	r := l.Loadbuffer([]byte(`t={k=15}`), `t={k=15}`)
+	if r != 0 {
+		t.Fatal("Loadbuffer=", r)
+	}
+	l.Call(0, 0)
+
+	l.Getglobal("t")
+	l.Getfield(-1, "k")
+	if x := l.Tonumber(-1); x != 15 {
+		t.Fatal("Tonumber=", x)
+	}
+}
+
+func TestPushlstringTolstring(t *T) {
+	l := Open()
+	defer l.Close()
+
+	l.Pushlstring([]byte("foo"))
+	if x := string(l.Tolstring(-1)); x != "foo" {
+		t.Fatal("Tolstring=", x)
+	}
+}
+
+func TestGetupvalue(t *T) {
+	l := Open()
+	defer l.Close()
+
+	r := l.Loadbuffer([]byte(`local u=10; function f() return u end`), "test")
+	if r != 0 {
+		t.Fatal("Loadbuffer=", r)
+	}
+	l.Call(0, 0)
+
+	l.Getglobal("f")
+	name := string(l.Getupvalue(-1, 1))
+	if name != "u" {
+		t.Error("Getupvalue=", name)
+	}
+	top := l.Tonumber(-1)
+	if top != 10 {
+		t.Error("upvalue=", top)
+	}
+}
+
+func TestSetmetatable(t *T) {
+	l := Open()
+	defer l.Close()
+
+	l.pushcclosure(Open_base, 0) //FIXME: cheating here!
+	l.Pushlstring([]byte(""))
+	l.Call(1, 0)
+
+	r := l.Loadbuffer([]byte(`m={i=10} t={}`), "test")
+	if r != 0 {
+		t.Fatal("Loadbuffer=", r)
+	}
+	l.Call(0, 0)
+
+	l.Getglobal("t")
+	l.Getglobal("m")
+	l.Setmetatable(-2)
+
+	r = l.Loadbuffer([]byte(`r=getmetatable(t) if r==m then r=1 else r=0 end`), "tmp")
+	if r != 0 {
+		t.Fatal("Loadbuffer=", r)
+	}
+	l.Call(0, 0)
+
+	l.Getglobal("r")
+	result := l.Tonumber(-1)
+	if result != 1 {
+		t.Error("result=", result)
+	}
+}

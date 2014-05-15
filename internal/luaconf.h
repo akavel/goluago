@@ -369,6 +369,13 @@
 /* MC: added lua_assert definition for internal debugging of Lua */
 void runtime·panicstring(int8*);
 #define lua_assert(x) ((void)((x) || (runtime·panicstring("lua_assert failed"), 1)))
+/* // MC: Optional alternative lua_assert:
+#define lua_assert(s,x) mylua_assert((s),(x))
+static void
+mylua_assert(const char *s, int expr) {
+	if (!expr) runtime·panicstring(s);
+}
+*/
 
 /*
 @@ luai_apicheck is the assert macro used by the Lua-C API.

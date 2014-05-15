@@ -47,7 +47,7 @@ func TestRunSuite(t *T) {
 				Open_io,
 				Open_os,
 			} {
-				l.Pushcclosure(lib, 0)
+				l.pushcclosure(lib, 0)
 				l.Pushlstring([]byte(""))
 				l.Call(1, 0)
 			}

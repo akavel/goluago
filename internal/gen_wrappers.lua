@@ -1,5 +1,5 @@
 
-local input = 'dummy.go'
+local input = 'golua_api.go'
 
 -----------------
 

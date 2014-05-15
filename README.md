@@ -7,6 +7,8 @@ for production** use), but some important goals were already completed successfu
 STATUS
 ------
 
+[C API: ~35% complete (49/142 + 1), ~10% have some test (14/143)](#C-API-STATUS)
+
 ### What works - new in alpha1 (2013-12-30):
 
   * [MILESTONE] workaround in ldebug.c for a bug in Go toolchain's C compiler
@@ -104,8 +106,7 @@ time on market, but has several nice and interesting features and properties.
 INSTALLATION
 ------------
 
-You need the Go language toolkit version 1 (see: http://golang.org).
-With the environment properly set up, type:
+With the [Go](http://golang.org) environment properly set up, type:
 
     go get github.com/akavel/goluago/internal
     go test github.com/akavel/goluago/internal
@@ -115,6 +116,158 @@ To retrieve and run a sample program:
     go get github.com/akavel/goluago/testlua
     cd $GOROOT   # or, see $GOPATH; on Windows %GOROOT%, %GOPATH%
     bin/testlua  # on Windows: bin\testlua.exe
+
+<a name="C-API-STATUS"/>
+C API STATUS
+------------
+
+~35% complete (49/142 + 1), ~10% have some test (14/143)
+
+| Go  |  C  | tests? |
+| --- | --- | ------ |
+|   | *[luaL_addchar](http://lua.org/manual/5.1/manual.html#luaL_addchar)* |   |
+|   | *[luaL_addlstring](http://lua.org/manual/5.1/manual.html#luaL_addlstring)* |   |
+|   | *[luaL_addsize](http://lua.org/manual/5.1/manual.html#luaL_addsize)* |   |
+|   | *[luaL_addstring](http://lua.org/manual/5.1/manual.html#luaL_addstring)* |   |
+|   | *[luaL_addvalue](http://lua.org/manual/5.1/manual.html#luaL_addvalue)* |   |
+|   | *[luaL_argcheck](http://lua.org/manual/5.1/manual.html#luaL_argcheck)* |   |
+|   | *[luaL_argerror](http://lua.org/manual/5.1/manual.html#luaL_argerror)* |   |
+|   | *[luaL_buffinit](http://lua.org/manual/5.1/manual.html#luaL_buffinit)* |   |
+|   | *[luaL_callmeta](http://lua.org/manual/5.1/manual.html#luaL_callmeta)* |   |
+|   | *[luaL_checkany](http://lua.org/manual/5.1/manual.html#luaL_checkany)* |   |
+|   | *[luaL_checkint](http://lua.org/manual/5.1/manual.html#luaL_checkint)* |   |
+|   | *[luaL_checkinteger](http://lua.org/manual/5.1/manual.html#luaL_checkinteger)* |   |
+|   | *[luaL_checklong](http://lua.org/manual/5.1/manual.html#luaL_checklong)* |   |
+|   | *[luaL_checklstring](http://lua.org/manual/5.1/manual.html#luaL_checklstring)* |   |
+|   | *[luaL_checknumber](http://lua.org/manual/5.1/manual.html#luaL_checknumber)* |   |
+|   | *[luaL_checkoption](http://lua.org/manual/5.1/manual.html#luaL_checkoption)* |   |
+|   | *[luaL_checkstack](http://lua.org/manual/5.1/manual.html#luaL_checkstack)* |   |
+|   | *[luaL_checkstring](http://lua.org/manual/5.1/manual.html#luaL_checkstring)* |   |
+|   | *[luaL_checktype](http://lua.org/manual/5.1/manual.html#luaL_checktype)* |   |
+|   | *[luaL_checkudata](http://lua.org/manual/5.1/manual.html#luaL_checkudata)* |   |
+|   | *[luaL_dofile](http://lua.org/manual/5.1/manual.html#luaL_dofile)* |   |
+|   | *[luaL_dostring](http://lua.org/manual/5.1/manual.html#luaL_dostring)* |   |
+|   | *[luaL_error](http://lua.org/manual/5.1/manual.html#luaL_error)* |   |
+|   | *[luaL_getmetafield](http://lua.org/manual/5.1/manual.html#luaL_getmetafield)* |   |
+|   | *[luaL_getmetatable](http://lua.org/manual/5.1/manual.html#luaL_getmetatable)* |   |
+|   | *[luaL_gsub](http://lua.org/manual/5.1/manual.html#luaL_gsub)* |   |
+| **[State.Loadbuffer](http://godoc.org/github.com/akavel/goluago/internal#State.Loadbuffer)** | **[luaL_loadbuffer](http://lua.org/manual/5.1/manual.html#luaL_loadbuffer)** | **has test!** |
+|   | *[luaL_loadfile](http://lua.org/manual/5.1/manual.html#luaL_loadfile)* |   |
+|   | *[luaL_loadstring](http://lua.org/manual/5.1/manual.html#luaL_loadstring)* |   |
+|   | *[luaL_newmetatable](http://lua.org/manual/5.1/manual.html#luaL_newmetatable)* |   |
+| **[Open](http://godoc.org/github.com/akavel/goluago/internal#Open)** | **[luaL_newstate](http://lua.org/manual/5.1/manual.html#luaL_newstate)** | **has test!** |
+|   | *[luaL_openlibs](http://lua.org/manual/5.1/manual.html#luaL_openlibs)* |   |
+|   | *[luaL_optint](http://lua.org/manual/5.1/manual.html#luaL_optint)* |   |
+|   | *[luaL_optinteger](http://lua.org/manual/5.1/manual.html#luaL_optinteger)* |   |
+|   | *[luaL_optlong](http://lua.org/manual/5.1/manual.html#luaL_optlong)* |   |
+|   | *[luaL_optlstring](http://lua.org/manual/5.1/manual.html#luaL_optlstring)* |   |
+|   | *[luaL_optnumber](http://lua.org/manual/5.1/manual.html#luaL_optnumber)* |   |
+|   | *[luaL_optstring](http://lua.org/manual/5.1/manual.html#luaL_optstring)* |   |
+|   | *[luaL_prepbuffer](http://lua.org/manual/5.1/manual.html#luaL_prepbuffer)* |   |
+|   | *[luaL_pushresult](http://lua.org/manual/5.1/manual.html#luaL_pushresult)* |   |
+|   | *[luaL_ref](http://lua.org/manual/5.1/manual.html#luaL_ref)* |   |
+|   | *[luaL_register](http://lua.org/manual/5.1/manual.html#luaL_register)* |   |
+|   | *[luaL_typename](http://lua.org/manual/5.1/manual.html#luaL_typename)* |   |
+|   | *[luaL_typerror](http://lua.org/manual/5.1/manual.html#luaL_typerror)* |   |
+|   | *[luaL_unref](http://lua.org/manual/5.1/manual.html#luaL_unref)* |   |
+|   | *[luaL_where](http://lua.org/manual/5.1/manual.html#luaL_where)* |   |
+|   | *[lua_atpanic](http://lua.org/manual/5.1/manual.html#lua_atpanic)* |   |
+| **[State.Call](http://godoc.org/github.com/akavel/goluago/internal#State.Call)** | **[lua_call](http://lua.org/manual/5.1/manual.html#lua_call)** | **has test!** |
+| **[State.Checkstack](http://godoc.org/github.com/akavel/goluago/internal#State.Checkstack)** | **[lua_checkstack](http://lua.org/manual/5.1/manual.html#lua_checkstack)** |   |
+| **[State.Close](http://godoc.org/github.com/akavel/goluago/internal#State.Close)** | **[lua_close](http://lua.org/manual/5.1/manual.html#lua_close)** | **has test!** |
+| **[State.Concat](http://godoc.org/github.com/akavel/goluago/internal#State.Concat)** | **[lua_concat](http://lua.org/manual/5.1/manual.html#lua_concat)** |   |
+|   | *[lua_cpcall](http://lua.org/manual/5.1/manual.html#lua_cpcall)* |   |
+| **[State.Createtable](http://godoc.org/github.com/akavel/goluago/internal#State.Createtable)** | **[lua_createtable](http://lua.org/manual/5.1/manual.html#lua_createtable)** |   |
+| **[State.Dump](http://godoc.org/github.com/akavel/goluago/internal#State.Dump)** | **[lua_dump](http://lua.org/manual/5.1/manual.html#lua_dump)** |   |
+| **[State.Equal](http://godoc.org/github.com/akavel/goluago/internal#State.Equal)** | **[lua_equal](http://lua.org/manual/5.1/manual.html#lua_equal)** | **has test!** |
+| **[State.Error](http://godoc.org/github.com/akavel/goluago/internal#State.Error)** | **[lua_error](http://lua.org/manual/5.1/manual.html#lua_error)** |   |
+| **[State.Gc](http://godoc.org/github.com/akavel/goluago/internal#State.Gc)** | **[lua_gc](http://lua.org/manual/5.1/manual.html#lua_gc)** |   |
+|   | *[lua_getallocf](http://lua.org/manual/5.1/manual.html#lua_getallocf)* |   |
+| **[State.Getfenv](http://godoc.org/github.com/akavel/goluago/internal#State.Getfenv)** | **[lua_getfenv](http://lua.org/manual/5.1/manual.html#lua_getfenv)** |   |
+| **[State.Getfield](http://godoc.org/github.com/akavel/goluago/internal#State.Getfield)** | **[lua_getfield](http://lua.org/manual/5.1/manual.html#lua_getfield)** | **has test!** |
+| **[State.Getglobal](http://godoc.org/github.com/akavel/goluago/internal#State.Getglobal)** | **[lua_getglobal](http://lua.org/manual/5.1/manual.html#lua_getglobal)** | **has test!** |
+|   | *[lua_gethook](http://lua.org/manual/5.1/manual.html#lua_gethook)* |   |
+|   | *[lua_gethookcount](http://lua.org/manual/5.1/manual.html#lua_gethookcount)* |   |
+|   | *[lua_gethookmask](http://lua.org/manual/5.1/manual.html#lua_gethookmask)* |   |
+|   | *[lua_getinfo](http://lua.org/manual/5.1/manual.html#lua_getinfo)* |   |
+|   | *[lua_getlocal](http://lua.org/manual/5.1/manual.html#lua_getlocal)* |   |
+| **[State.Getmetatable](http://godoc.org/github.com/akavel/goluago/internal#State.Getmetatable)** | **[lua_getmetatable](http://lua.org/manual/5.1/manual.html#lua_getmetatable)** |   |
+|   | *[lua_getstack](http://lua.org/manual/5.1/manual.html#lua_getstack)* |   |
+| **[State.Gettable](http://godoc.org/github.com/akavel/goluago/internal#State.Gettable)** | **[lua_gettable](http://lua.org/manual/5.1/manual.html#lua_gettable)** |   |
+| **[State.Gettop](http://godoc.org/github.com/akavel/goluago/internal#State.Gettop)** | **[lua_gettop](http://lua.org/manual/5.1/manual.html#lua_gettop)** | **has test!** |
+| **[State.Getupvalue](http://godoc.org/github.com/akavel/goluago/internal#State.Getupvalue)** | **[lua_getupvalue](http://lua.org/manual/5.1/manual.html#lua_getupvalue)** | **has test!** |
+| **[State.Insert](http://godoc.org/github.com/akavel/goluago/internal#State.Insert)** | **[lua_insert](http://lua.org/manual/5.1/manual.html#lua_insert)** |   |
+| **[State.Isboolean](http://godoc.org/github.com/akavel/goluago/internal#State.Isboolean)** | **[lua_isboolean](http://lua.org/manual/5.1/manual.html#lua_isboolean)** |   |
+|   | *[lua_iscfunction](http://lua.org/manual/5.1/manual.html#lua_iscfunction)* |   |
+| **[State.Isfunction](http://godoc.org/github.com/akavel/goluago/internal#State.Isfunction)** | **[lua_isfunction](http://lua.org/manual/5.1/manual.html#lua_isfunction)** |   |
+| **[State.Islightuserdata](http://godoc.org/github.com/akavel/goluago/internal#State.Islightuserdata)** | **[lua_islightuserdata](http://lua.org/manual/5.1/manual.html#lua_islightuserdata)** |   |
+| **[State.Isnil](http://godoc.org/github.com/akavel/goluago/internal#State.Isnil)** | **[lua_isnil](http://lua.org/manual/5.1/manual.html#lua_isnil)** |   |
+| **[State.Isnone](http://godoc.org/github.com/akavel/goluago/internal#State.Isnone)** | **[lua_isnone](http://lua.org/manual/5.1/manual.html#lua_isnone)** |   |
+| **[State.Isnoneornil](http://godoc.org/github.com/akavel/goluago/internal#State.Isnoneornil)** | **[lua_isnoneornil](http://lua.org/manual/5.1/manual.html#lua_isnoneornil)** |   |
+| **[State.Isnumber](http://godoc.org/github.com/akavel/goluago/internal#State.Isnumber)** | **[lua_isnumber](http://lua.org/manual/5.1/manual.html#lua_isnumber)** |   |
+| **[State.Isstring](http://godoc.org/github.com/akavel/goluago/internal#State.Isstring)** | **[lua_isstring](http://lua.org/manual/5.1/manual.html#lua_isstring)** |   |
+| **[State.Istable](http://godoc.org/github.com/akavel/goluago/internal#State.Istable)** | **[lua_istable](http://lua.org/manual/5.1/manual.html#lua_istable)** |   |
+| **[State.Isthread](http://godoc.org/github.com/akavel/goluago/internal#State.Isthread)** | **[lua_isthread](http://lua.org/manual/5.1/manual.html#lua_isthread)** |   |
+| **[State.Isuserdata](http://godoc.org/github.com/akavel/goluago/internal#State.Isuserdata)** | **[lua_isuserdata](http://lua.org/manual/5.1/manual.html#lua_isuserdata)** |   |
+| **[State.Lessthan](http://godoc.org/github.com/akavel/goluago/internal#State.Lessthan)** | **[lua_lessthan](http://lua.org/manual/5.1/manual.html#lua_lessthan)** |   |
+|   | *[lua_load](http://lua.org/manual/5.1/manual.html#lua_load)* |   |
+|   | *[lua_newstate](http://lua.org/manual/5.1/manual.html#lua_newstate)* |   |
+| **[State.Newtable](http://godoc.org/github.com/akavel/goluago/internal#State.Newtable)** | **[lua_newtable](http://lua.org/manual/5.1/manual.html#lua_newtable)** |   |
+|   | *[lua_newthread](http://lua.org/manual/5.1/manual.html#lua_newthread)* |   |
+|   | *[lua_newuserdata](http://lua.org/manual/5.1/manual.html#lua_newuserdata)* |   |
+| **[State.Next](http://godoc.org/github.com/akavel/goluago/internal#State.Next)** | **[lua_next](http://lua.org/manual/5.1/manual.html#lua_next)** |   |
+|   | *[lua_objlen](http://lua.org/manual/5.1/manual.html#lua_objlen)* |   |
+| **[State.Pcall](http://godoc.org/github.com/akavel/goluago/internal#State.Pcall)** | **[lua_pcall](http://lua.org/manual/5.1/manual.html#lua_pcall)** |   |
+| **[State.Pop](http://godoc.org/github.com/akavel/goluago/internal#State.Pop)** | **[lua_pop](http://lua.org/manual/5.1/manual.html#lua_pop)** |   |
+| **[State.Pushboolean](http://godoc.org/github.com/akavel/goluago/internal#State.Pushboolean)** | **[lua_pushboolean](http://lua.org/manual/5.1/manual.html#lua_pushboolean)** |   |
+|   | *[lua_pushcclosure](http://lua.org/manual/5.1/manual.html#lua_pushcclosure)* |   |
+|   | *[lua_pushcfunction](http://lua.org/manual/5.1/manual.html#lua_pushcfunction)* |   |
+|   | *[lua_pushfstring](http://lua.org/manual/5.1/manual.html#lua_pushfstring)* |   |
+| **[State.Pushgofunction](http://godoc.org/github.com/akavel/goluago/internal#State.Pushgofunction)** | lua_pushgofunction |   |
+| **[State.Pushinteger](http://godoc.org/github.com/akavel/goluago/internal#State.Pushinteger)** | **[lua_pushinteger](http://lua.org/manual/5.1/manual.html#lua_pushinteger)** | **has test!** |
+|   | *[lua_pushlightuserdata](http://lua.org/manual/5.1/manual.html#lua_pushlightuserdata)* |   |
+|   | *[lua_pushliteral](http://lua.org/manual/5.1/manual.html#lua_pushliteral)* |   |
+| **[State.Pushlstring](http://godoc.org/github.com/akavel/goluago/internal#State.Pushlstring)** | **[lua_pushlstring](http://lua.org/manual/5.1/manual.html#lua_pushlstring)** | **has test!** |
+| **[State.Pushnil](http://godoc.org/github.com/akavel/goluago/internal#State.Pushnil)** | **[lua_pushnil](http://lua.org/manual/5.1/manual.html#lua_pushnil)** |   |
+| **[State.Pushnumber](http://godoc.org/github.com/akavel/goluago/internal#State.Pushnumber)** | **[lua_pushnumber](http://lua.org/manual/5.1/manual.html#lua_pushnumber)** |   |
+|   | *[lua_pushstring](http://lua.org/manual/5.1/manual.html#lua_pushstring)* |   |
+|   | *[lua_pushthread](http://lua.org/manual/5.1/manual.html#lua_pushthread)* |   |
+| **[State.Pushvalue](http://godoc.org/github.com/akavel/goluago/internal#State.Pushvalue)** | **[lua_pushvalue](http://lua.org/manual/5.1/manual.html#lua_pushvalue)** |   |
+|   | *[lua_pushvfstring](http://lua.org/manual/5.1/manual.html#lua_pushvfstring)* |   |
+| **[State.Rawequal](http://godoc.org/github.com/akavel/goluago/internal#State.Rawequal)** | **[lua_rawequal](http://lua.org/manual/5.1/manual.html#lua_rawequal)** |   |
+| **[State.Rawget](http://godoc.org/github.com/akavel/goluago/internal#State.Rawget)** | **[lua_rawget](http://lua.org/manual/5.1/manual.html#lua_rawget)** |   |
+| **[State.Rawgeti](http://godoc.org/github.com/akavel/goluago/internal#State.Rawgeti)** | **[lua_rawgeti](http://lua.org/manual/5.1/manual.html#lua_rawgeti)** |   |
+| **[State.Rawset](http://godoc.org/github.com/akavel/goluago/internal#State.Rawset)** | **[lua_rawset](http://lua.org/manual/5.1/manual.html#lua_rawset)** |   |
+| **[State.Rawseti](http://godoc.org/github.com/akavel/goluago/internal#State.Rawseti)** | **[lua_rawseti](http://lua.org/manual/5.1/manual.html#lua_rawseti)** |   |
+|   | *[lua_register](http://lua.org/manual/5.1/manual.html#lua_register)* |   |
+|   | *[lua_remove](http://lua.org/manual/5.1/manual.html#lua_remove)* |   |
+|   | *[lua_replace](http://lua.org/manual/5.1/manual.html#lua_replace)* |   |
+|   | *[lua_resume](http://lua.org/manual/5.1/manual.html#lua_resume)* |   |
+|   | *[lua_setallocf](http://lua.org/manual/5.1/manual.html#lua_setallocf)* |   |
+|   | *[lua_setfenv](http://lua.org/manual/5.1/manual.html#lua_setfenv)* |   |
+|   | *[lua_setfield](http://lua.org/manual/5.1/manual.html#lua_setfield)* |   |
+|   | *[lua_setglobal](http://lua.org/manual/5.1/manual.html#lua_setglobal)* |   |
+|   | *[lua_sethook](http://lua.org/manual/5.1/manual.html#lua_sethook)* |   |
+|   | *[lua_setlocal](http://lua.org/manual/5.1/manual.html#lua_setlocal)* |   |
+| **[State.Setmetatable](http://godoc.org/github.com/akavel/goluago/internal#State.Setmetatable)** | **[lua_setmetatable](http://lua.org/manual/5.1/manual.html#lua_setmetatable)** | **has test!** |
+|   | *[lua_settable](http://lua.org/manual/5.1/manual.html#lua_settable)* |   |
+|   | *[lua_settop](http://lua.org/manual/5.1/manual.html#lua_settop)* |   |
+|   | *[lua_setupvalue](http://lua.org/manual/5.1/manual.html#lua_setupvalue)* |   |
+|   | *[lua_status](http://lua.org/manual/5.1/manual.html#lua_status)* |   |
+|   | *[lua_toboolean](http://lua.org/manual/5.1/manual.html#lua_toboolean)* |   |
+|   | *[lua_tocfunction](http://lua.org/manual/5.1/manual.html#lua_tocfunction)* |   |
+|   | *[lua_tointeger](http://lua.org/manual/5.1/manual.html#lua_tointeger)* |   |
+| **[State.Tolstring](http://godoc.org/github.com/akavel/goluago/internal#State.Tolstring)** | **[lua_tolstring](http://lua.org/manual/5.1/manual.html#lua_tolstring)** | **has test!** |
+| **[State.Tonumber](http://godoc.org/github.com/akavel/goluago/internal#State.Tonumber)** | **[lua_tonumber](http://lua.org/manual/5.1/manual.html#lua_tonumber)** | **has test!** |
+|   | *[lua_topointer](http://lua.org/manual/5.1/manual.html#lua_topointer)* |   |
+|   | *[lua_tostring](http://lua.org/manual/5.1/manual.html#lua_tostring)* |   |
+|   | *[lua_tothread](http://lua.org/manual/5.1/manual.html#lua_tothread)* |   |
+|   | *[lua_touserdata](http://lua.org/manual/5.1/manual.html#lua_touserdata)* |   |
+|   | *[lua_type](http://lua.org/manual/5.1/manual.html#lua_type)* |   |
+|   | *[lua_typename](http://lua.org/manual/5.1/manual.html#lua_typename)* |   |
+|   | *[lua_upvalueindex](http://lua.org/manual/5.1/manual.html#lua_upvalueindex)* |   |
+|   | *[lua_xmove](http://lua.org/manual/5.1/manual.html#lua_xmove)* |   |
+|   | *[lua_yield](http://lua.org/manual/5.1/manual.html#lua_yield)* |   |
 
 
 LICENSE

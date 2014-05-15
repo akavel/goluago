@@ -129,7 +129,6 @@ func main() {
 	println("top=", s.Gettop())
 	println("tolstring(-1)=", string(s.Tolstring(-1)))
 	println()
-	
 
 	println()
 	prog = "b=1; local aaa='a'; x=aaa+b"
@@ -161,7 +160,7 @@ func main() {
 	println("top=", s.Gettop())
 	println("tolstring(-1)=", string(s.Tolstring(-1)))
 	println()
-	
+
 	// PANIC and fprintf(stdio,...) test
 	println("lessthan(-2,-1)=", s.Lessthan(-3, -1))
 }
