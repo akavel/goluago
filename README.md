@@ -95,7 +95,7 @@ worldwide since then). MIT-style licensed.
 
 http://golang.org
 
-Farly new language developed at Google. Authors are however experienced in
+Fairly new language developed at Google. Authors are however experienced in
 building and experimenting with programming languages (specifically C, Limbo), with 
 notable uses, including OS development (Unix, Plan9/Inferno). Highly portable
 (x86/x64, ARM; Linux/*nix, Windows, Mac OS X, other ports in progress), written
@@ -277,7 +277,7 @@ LICENSE
 ### Where not otherwise specified, MIT-licensed as:
 
 
-Copyright (c) 2011-2012 Mateusz Czapliński
+Copyright (c) 2011-2013 Mateusz Czapliński
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
