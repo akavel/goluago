@@ -28,6 +28,8 @@ struct FILE *mylua_popen(struct lua_State *, const char *, const char *);
 //FIXME: MC: is below ok?
 void *NULL;
 
+extern double HUGE_VAL;
+
 #endif
 
 /////////////////////////////////////////////////
@@ -276,7 +278,7 @@ typedef struct {
 
 /* a HUGE_VAL appropriate for IEEE double-precision */
 /* the correct value, 1.797693134862316e+308, causes a ken overflow */
-#define HUGE_VAL 1.79769313486231e+308
+//#define HUGE_VAL 1.79769313486231e+308
 
 #ifdef __cplusplus
 extern "C" {
