@@ -39,7 +39,7 @@ echo #define luaL_setn(a,b,c) NOP() >> tmpc\lauxlib.h
 :: collect main sources of Lua
 for %%f in (l*.c) do (
   cd tmpc
-  (echo #include "gostdc.h" && findstr /v /c:"#include <" ..\%%f) | %PREPRO% >> %%f
+  (echo #include "gostdc.h" && findstr /v /c:"#include <" ..\%%f) | powershell -Command "$input | %% {$_ -replace \"-^>top -=\",\"-^>top += -\"} | %PREPRO%" >> %%f
   cd ..
   call set LUASRC=%%LUASRC%% tmpc/%%f
 )
