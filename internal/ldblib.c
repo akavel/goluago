@@ -284,7 +284,8 @@ static int db_gethook (lua_State *L) {
   char buff[5];
   int mask = lua_gethookmask(L1);
   lua_Hook hook = lua_gethook(L1);
-  if (hook != NULL && hook != hookf)  /* external hook? */
+  //FIXME: was: if (hook != NULL && hook != hookf)  /* external hook? */
+  if (hook != NULL /*&& hook != hookf*/)  /* external hook? */
     lua_pushliteral(L, "external hook");
   else {
     gethooktable(L);
