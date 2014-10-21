@@ -367,8 +367,9 @@
 #define LUA_COMPAT_OPENLIB
 
 /* MC: added lua_assert definition for internal debugging of Lua */
-void runtime·panicstring(int8*);
-#define lua_assert(x) ((void)((x) || (runtime·panicstring("lua_assert failed"), 1)))
+//void runtime·panicstring(int8*);
+//#define lua_assert(x) ((void)((x) || (runtime_panicstring("lua_assert failed"), 1)))
+#define lua_assert(x) mylua_assert(x)
 /* // MC: Optional alternative lua_assert:
 #define lua_assert(s,x) mylua_assert((s),(x))
 static void
@@ -692,9 +693,11 @@ mylua_assert(const char *s, int expr) {
 
 // #else
 
-#define lua_popen(L,c,m)	((void)((void)c, m),  \
-		luaL_error(L, LUA_QL("popen") " not supported"), (FILE*)0)
-#define lua_pclose(L,file)		((void)((void)L, file), 0)
+//#define lua_popen(L,c,m)	((void)((void)c, m),  \
+//		luaL_error(L, LUA_QL("popen") " not supported"), (FILE*)0)
+//#define lua_pclose(L,file)		((void)((void)L, file), 0)
+#define lua_popen(L,c,m) mylua_popen(L,c,m)
+#define lua_pclose(L,file) mylua_pclose(L,file)
 
 // #endif
 
@@ -735,12 +738,18 @@ mylua_assert(const char *s, int expr) {
 ** CHANGE them if you defined LUAI_EXTRASPACE and need to do something
 ** extra when a thread is created/deleted/resumed/yielded.
 */
-#define luai_userstateopen(L)		((void)L)
-#define luai_userstateclose(L)		((void)L)
-#define luai_userstatethread(L,L1)	((void)L)
-#define luai_userstatefree(L)		((void)L)
-#define luai_userstateresume(L,n)	((void)L)
-#define luai_userstateyield(L,n)	((void)L)
+// #define luai_userstateopen(L)		((void)L)
+// #define luai_userstateclose(L)		((void)L)
+// #define luai_userstatethread(L,L1)	((void)L)
+// #define luai_userstatefree(L)		((void)L)
+// #define luai_userstateresume(L,n)	((void)L)
+// #define luai_userstateyield(L,n)	((void)L)
+#define luai_userstateopen(L)		NOP()
+#define luai_userstateclose(L)		NOP()
+#define luai_userstatethread(L,L1)	NOP()
+#define luai_userstatefree(L)		NOP()
+#define luai_userstateresume(L,n)	NOP()
+#define luai_userstateyield(L,n)	NOP()
 
 
 /*

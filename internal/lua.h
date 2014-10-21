@@ -90,17 +90,19 @@ typedef void * (*lua_Alloc) (void *ud, void *ptr, size_t osize, size_t nsize);
 /*
 ** generic extra include file
 */
-#ifdef LUA_USER_H
-#include LUA_USER_H
-#endif
+//#ifdef LUA_USER_H
+//#include LUA_USER_H
+//#endif
 
 
 /* type of numbers in Lua */
-typedef LUA_NUMBER lua_Number;
+typedef double lua_Number;
+//typedef LUA_NUMBER lua_Number;
 
 
 /* type for integer functions */
-typedef LUA_INTEGER lua_Integer;
+//typedef LUA_INTEGER lua_Integer;
+typedef ptrdiff_t lua_Integer;
 
 
 
