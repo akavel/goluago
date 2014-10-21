@@ -32,7 +32,7 @@ for %%f in (*.h) do (
 :: patch some headers
 echo #include "fix2go.h" >tmpc\gostdc.h
 echo #undef luaL_argcheck >> tmpc\lauxlib.h
-echo #define luaL_argcheck(a,b,c,d) mylua_argcheck(a,b,c,d) >> tmpc\lauxlib.h
+echo #define luaL_argcheck(a,b,c,d) mylua_argcheck(a,((b)!=0),c,d) >> tmpc\lauxlib.h
 echo #undef luaL_setn >> tmpc\lauxlib.h
 echo #define luaL_setn(a,b,c) NOP() >> tmpc\lauxlib.h
 
