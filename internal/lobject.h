@@ -228,11 +228,12 @@ typedef union Udata {
 /*
 ** Function Prototypes
 */
-typedef struct Proto {
+typedef struct Proto Proto;
+struct Proto {
   CommonHeader;
   TValue *k;  /* constants used by the function */
   Instruction *code;
-  struct Proto **p;  /* functions defined inside the function */
+  Proto **p;  /* functions defined inside the function */
   int *lineinfo;  /* map from opcodes to source lines */
   struct LocVar *locvars;  /* information about local variables */
   TString **upvalues;  /* upvalue names */
@@ -250,7 +251,7 @@ typedef struct Proto {
   lu_byte numparams;
   lu_byte is_vararg;
   lu_byte maxstacksize;
-} Proto;
+};
 
 
 /* masks for new-style vararg */
@@ -271,17 +272,18 @@ typedef struct LocVar {
 ** Upvalues
 */
 
-typedef struct UpVal {
+typedef struct UpVal UpVal;
+struct UpVal {
   CommonHeader;
   TValue *v;  /* points to stack or to its own value */
   union {
     TValue value;  /* the value (when closed) */
     struct {  /* double linked list (when open) */
-      struct UpVal *prev;
-      struct UpVal *next;
+      UpVal *prev;
+      UpVal *next;
     } l;
   } u;
-} UpVal;
+};
 
 
 /*
@@ -301,7 +303,7 @@ typedef struct CClosure {
 
 typedef struct LClosure {
   ClosureHeader;
-  struct Proto *p;
+  Proto *p;
   UpVal *upvals[1];
 } LClosure;
 
@@ -335,17 +337,18 @@ typedef struct Node {
 } Node;
 
 
-typedef struct Table {
+typedef struct Table Table;
+struct Table {
   CommonHeader;
   lu_byte flags;  /* 1<<p means tagmethod(p) is not present */ 
   lu_byte lsizenode;  /* log2 of size of `node' array */
-  struct Table *metatable;
+  Table *metatable;
   TValue *array;  /* array part */
   Node *node;
   Node *lastfree;  /* any free position is before this position */
   GCObject *gclist;
   int sizearray;  /* size of `array' array */
-} Table;
+};
 
 
 

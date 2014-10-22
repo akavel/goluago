@@ -812,12 +812,12 @@ struct	stat {
 extern "C" {
 #endif
 
-extern mode_t umask(mode_t);
-extern int mkdir(const char *, mode_t);
-extern int mkfifo(const char *, mode_t);
-extern int stat(const char *, struct stat *);
-extern int fstat(int, struct stat *);
-extern int chmod(const char *, mode_t);
+//extern mode_t umask(mode_t);
+//extern int mkdir(const char *, mode_t);
+//extern int mkfifo(const char *, mode_t);
+//extern int stat(const char *, struct stat *);
+//extern int fstat(int, struct stat *);
+//extern int chmod(const char *, mode_t);
 
 #ifdef _BSD_EXTENSION
 extern int	lstat(char *, struct stat *);
