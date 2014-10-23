@@ -41,8 +41,9 @@
 
 
 /* chain list of long jump buffers */
+typedef struct lua_longjmp lua_longjmp;
 struct lua_longjmp {
-  struct lua_longjmp *previous;
+  lua_longjmp *previous;
   luai_jmpbuf b;
   volatile int status;  /* error code */
 };
@@ -109,7 +110,7 @@ void luaD_throw (lua_State *L, int errcode) {
 
 
 int luaD_rawrunprotected (lua_State *L, Pfunc f, void *ud) {
-  struct lua_longjmp lj;
+  lua_longjmp lj;
   lj.status = 0;
   lj.previous = L->errorJmp;  /* chain new error handler */
   L->errorJmp = &lj;
@@ -494,8 +495,12 @@ static void f_parser (lua_State *L, void *ud) {
   struct SParser *p = cast(struct SParser *, ud);
   int c = luaZ_lookahead(p->z);
   luaC_checkGC(L);
-  tf = ((c == LUA_SIGNATURE[0]) ? luaU_undump : luaY_parser)(L, p->z,
-                                                             &p->buff, p->name);
+//  tf = ((c == LUA_SIGNATURE[0]) ? luaU_undump : luaY_parser)(L, p->z,
+//                                                             &p->buff, p->name);
+  if (c == LUA_SIGNATURE[0])
+    tf = luaU_undump(L, p->z, &p->buff, p->name);
+  else
+    tf = luaY_parser(L, p->z, &p->buff, p->name);
   cl = luaF_newLclosure(L, tf->nups, hvalue(gt(L)));
   cl->l.p = tf;
   for (i = 0; i < tf->nups; i++)  /* initialize eventual upvalues */

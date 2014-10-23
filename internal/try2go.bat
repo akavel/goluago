@@ -22,24 +22,16 @@ echo #undef luaL_setn >> tmpc\lauxlib.h
 echo #define luaL_setn(a,b,c) NOP() >> tmpc\lauxlib.h
 
 :: collect main sources of Lua
-::for %%f in (l*.c) do (
-for %%f in (lzio.c) do (
-  cd tmpc
-  (echo #include "gostdc.h" && findstr /v /c:"#include <" ..\%%f) | powershell -Command "$input | %% {$_ -replace \"-^>top -=\",\"-^>top += -\"} | %PREPRO%" >> %%f
-  cd ..
+echo #include "gostdc.h" > tmpc\amalgm0.c
+for %%f in (l*.c) do (
+  go run prepro.go < %%f >> tmpc\amalgm0.c
   call set LUASRC=%%LUASRC%% tmpc/%%f
 )
-
-:::: collect all needed headers
-::rmdir /q/s tmph  2> nul
-::mkdir tmph
-::::for %%f in (..\..\gostdc\*.h) do (
-::::	echo %%~nxf
-::::)
-::::copy ..\..\gostdc\*.h tmph\  > nul
-::::copy %GOROOT%\pkg\%RUNTIME%\runtime.h  tmph\  > nul
+cd tmpc
+%PREPRO% -C < amalgm0.c > amalgm.c
+cd ..
 
 ::call runc2go -f fixup.txt -o tmpgo -I=%CD%/tmph %LUASRC% 2> errors2go.txt
-call runc2go -f fixup.txt -o tmpgo %LUASRC%  2> errors2go.txt
+call runc2go -f fixup.txt -o tmpgo tmpc\amalgm.c 2> errors2go.txt
 
 endlocal
