@@ -216,8 +216,8 @@ typedef union Udata {
   L_Umaxalign dummy;  /* ensures maximum alignment for `local' udata */
   struct {
     CommonHeader;
-    struct Table *metatable;
-    struct Table *env;
+    Table *metatable;
+    Table *env;
     size_t len;
   } uv;
 } Udata;
@@ -235,7 +235,7 @@ struct Proto {
   Instruction *code;
   Proto **p;  /* functions defined inside the function */
   int *lineinfo;  /* map from opcodes to source lines */
-  struct LocVar *locvars;  /* information about local variables */
+  LocVar *locvars;  /* information about local variables */
   TString **upvalues;  /* upvalue names */
   TString  *source;
   int sizeupvalues;
@@ -292,7 +292,7 @@ struct UpVal {
 
 #define ClosureHeader \
 	CommonHeader; lu_byte isC; lu_byte nupvalues; GCObject *gclist; \
-	struct Table *env
+	Table *env
 
 typedef struct CClosure {
   ClosureHeader;
@@ -325,7 +325,7 @@ typedef union Closure {
 typedef union TKey {
   struct {
     TValuefields;
-    struct Node *next;  /* for chaining */
+    Node *next;  /* for chaining */
   } nk;
   TValue tvk;
 } TKey;

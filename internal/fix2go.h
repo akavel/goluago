@@ -9,18 +9,21 @@ typedef signed long int ptrdiff_t;
 //typedef struct time_t time_t;
 typedef unsigned long int uintptr;
 
+typedef struct lua_State lua_State;
+typedef struct lua_longjmp lua_longjmp;
+
 #define lua_lock(L) NOP()
 #define lua_unlock(L) NOP()
 #define UNUSED(x) NOP()
 void NOP();
 void runtime_panicstring(const char *);
 void mylua_assert(int);
-void mylua_argcheck(struct lua_State *, int, int, const char *);
+void mylua_argcheck(lua_State *, int, int, const char *);
 uintptr ROUND(uintptr, uintptr);
-void _luai_throw(struct lua_State *);
-void _luai_try(struct lua_State *, void (*f)(struct lua_State *, void *), void *);
-int mylua_pclose(struct lua_State *, struct FILE *);
-struct FILE *mylua_popen(struct lua_State *, const char *, const char *);
+void _luai_throw(lua_State *);
+void _luai_try(lua_State *, void (*f)(lua_State *, void *), void *);
+int mylua_pclose(lua_State *, struct FILE *);
+struct FILE *mylua_popen(lua_State *, const char *, const char *);
 
 //FIXME: MC: below is temporary I hope
 #define HARDSTACKTESTS

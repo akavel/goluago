@@ -51,7 +51,7 @@ typedef struct upvaldesc {
 } upvaldesc;
 
 
-struct BlockCnt;  /* defined in lparser.c */
+typedef struct BlockCnt BlockCnt;  /* defined in lparser.c */
 
 
 /* state needed to generate code for a given function */
@@ -61,8 +61,8 @@ struct FuncState {
   Table *h;  /* table to find (and reuse) elements in `k' */
   FuncState *prev;  /* enclosing function */
   LexState *ls;  /* lexical state */
-  struct lua_State *L;  /* copy of the Lua state */
-  struct BlockCnt *bl;  /* chain of current blocks */
+  lua_State *L;  /* copy of the Lua state */
+  BlockCnt *bl;  /* chain of current blocks */
   int pc;  /* next position to code (equivalent to `ncode') */
   int lasttarget;   /* `pc' of last `jump target' */
   int jpc;  /* list of pending jumps to `pc' */

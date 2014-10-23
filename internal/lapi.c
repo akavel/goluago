@@ -797,14 +797,14 @@ struct CallS {  /* data to `f_call' */
 
 
 static void f_call (lua_State *L, void *ud) {
-  struct CallS *c = cast(struct CallS *, ud);
+  CallS *c = cast(CallS *, ud);
   luaD_call(L, c->func, c->nresults);
 }
 
 
 
 LUA_API int lua_pcall (lua_State *L, int nargs, int nresults, int errfunc) {
-  struct CallS c;
+  CallS c;
   int status;
   ptrdiff_t func;
   lua_lock(L);
@@ -836,7 +836,7 @@ struct CCallS {  /* data to `f_Ccall' */
 
 
 static void f_Ccall (lua_State *L, void *ud) {
-  struct CCallS *c = cast(struct CCallS *, ud);
+  CCallS *c = cast(CCallS *, ud);
   Closure *cl;
   cl = luaF_newCclosure(L, 0, getcurrenv(L));
   cl->c.f = c->func;
@@ -849,7 +849,7 @@ static void f_Ccall (lua_State *L, void *ud) {
 
 
 LUA_API int lua_cpcall (lua_State *L, lua_CFunction func, void *ud) {
-  struct CCallS c;
+  CCallS c;
   int status;
   lua_lock(L);
   c.func = func;

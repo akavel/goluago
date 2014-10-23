@@ -14,7 +14,7 @@ func main() {
 	err := pipe.Run(pipe.Line(
 		pipe.Read(os.Stdin),
 		pipe.Filter(func(line []byte) bool {
-			return !bytes.HasPrefix(line, []byte("#include <"))
+			return !bytes.HasPrefix(line, []byte("#include "))
 		}),
 		pipe.Replace(func(line []byte) []byte {
 			return bytes.Replace(line, []byte("->top -="), []byte("->top += -"), -1)

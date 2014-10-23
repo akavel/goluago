@@ -492,7 +492,7 @@ static void f_parser (lua_State *L, void *ud) {
   int i;
   Proto *tf;
   Closure *cl;
-  struct SParser *p = cast(struct SParser *, ud);
+  SParser *p = cast(SParser *, ud);
   int c = luaZ_lookahead(p->z);
   luaC_checkGC(L);
 //  tf = ((c == LUA_SIGNATURE[0]) ? luaU_undump : luaY_parser)(L, p->z,
@@ -511,7 +511,7 @@ static void f_parser (lua_State *L, void *ud) {
 
 
 int luaD_protectedparser (lua_State *L, ZIO *z, const char *name) {
-  struct SParser p;
+  SParser p;
   int status;
   p.z = z; p.name = name;
   luaZ_initbuffer(L, &p.buff);

@@ -15,7 +15,7 @@
 
 
 
-struct lua_longjmp;  /* defined in ldo.c */
+typedef struct lua_longjmp lua_longjmp;  /* defined in ldo.c */
 
 
 /* table of globals */
@@ -87,9 +87,9 @@ typedef struct global_State {
   int gcstepmul;  /* GC `granularity' */
   lua_CFunction panic;  /* to be called in unprotected errors */
   TValue l_registry;
-  struct lua_State *mainthread;
+  lua_State *mainthread;
   UpVal uvhead;  /* head of double-linked list of all open upvalues */
-  struct Table *mt[NUM_TAGS];  /* metatables for basic types */
+  Table *mt[NUM_TAGS];  /* metatables for basic types */
   TString *tmname[TM_N];  /* array with tag-method names */
 } global_State;
 
@@ -122,7 +122,7 @@ struct lua_State {
   TValue env;  /* temporary place for environments */
   GCObject *openupval;  /* list of open upvalues in this stack */
   GCObject *gclist;
-  struct lua_longjmp *errorJmp;  /* current error recover point */
+  lua_longjmp *errorJmp;  /* current error recover point */
   ptrdiff_t errfunc;  /* current error handling function (stack index) */
 };
 
@@ -138,10 +138,10 @@ union GCObject {
   union TString ts;
   union Udata u;
   union Closure cl;
-  struct Table h;
-  struct Proto p;
-  struct UpVal uv;
-  struct lua_State th;  /* thread */
+  Table h;
+  Proto p;
+  UpVal uv;
+  lua_State th;  /* thread */
 };
 
 

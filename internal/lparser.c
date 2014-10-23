@@ -37,13 +37,14 @@
 /*
 ** nodes for block list (list of active blocks)
 */
-typedef struct BlockCnt {
-  struct BlockCnt *previous;  /* chain */
+typedef struct BlockCnt BlockCnt;
+struct BlockCnt {
+  BlockCnt *previous;  /* chain */
   int breaklist;  /* list of jumps out of this loop */
   lu_byte nactvar;  /* # active locals outside the breakable structure */
   lu_byte upval;  /* true if some variable in the block is an upvalue */
   lu_byte isbreakable;  /* true if `block' is a loop */
-} BlockCnt;
+};
 
 
 
@@ -381,8 +382,8 @@ static void close_func (LexState *ls) {
 
 
 Proto *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff, const char *name) {
-  struct LexState lexstate;
-  struct FuncState funcstate;
+  LexState lexstate;
+  FuncState funcstate;
   lexstate.buff = buff;
   luaX_setinput(L, &lexstate, z, luaS_new(L, name));
   open_func(&lexstate, &funcstate);
@@ -440,7 +441,7 @@ struct ConsControl {
 };
 
 
-static void recfield (LexState *ls, struct ConsControl *cc) {
+static void recfield (LexState *ls, ConsControl *cc) {
   /* recfield -> (NAME | `['exp1`]') = exp1 */
   FuncState *fs = ls->fs;
   int reg = ls->fs->freereg;
@@ -461,7 +462,7 @@ static void recfield (LexState *ls, struct ConsControl *cc) {
 }
 
 
-static void closelistfield (FuncState *fs, struct ConsControl *cc) {
+static void closelistfield (FuncState *fs, ConsControl *cc) {
   if (cc->v.k == VVOID) return;  /* there is no list item */
   luaK_exp2nextreg(fs, &cc->v);
   cc->v.k = VVOID;
@@ -472,7 +473,7 @@ static void closelistfield (FuncState *fs, struct ConsControl *cc) {
 }
 
 
-static void lastlistfield (FuncState *fs, struct ConsControl *cc) {
+static void lastlistfield (FuncState *fs, ConsControl *cc) {
   if (cc->tostore == 0) return;
   if (hasmultret(cc->v.k)) {
     luaK_setmultret(fs, &cc->v);
@@ -487,7 +488,7 @@ static void lastlistfield (FuncState *fs, struct ConsControl *cc) {
 }
 
 
-static void listfield (LexState *ls, struct ConsControl *cc) {
+static void listfield (LexState *ls, ConsControl *cc) {
   expr(ls, &cc->v);
   luaY_checklimit(ls->fs, cc->na, MAX_INT, "items in a constructor");
   cc->na++;
@@ -500,7 +501,7 @@ static void constructor (LexState *ls, expdesc *t) {
   FuncState *fs = ls->fs;
   int line = ls->linenumber;
   int pc = luaK_codeABC(fs, OP_NEWTABLE, 0, 0, 0);
-  struct ConsControl cc;
+  ConsControl cc;
   cc.na = cc.nh = cc.tostore = 0;
   cc.t = t;
   init_exp(t, VRELOCABLE, pc);
@@ -893,8 +894,9 @@ static void block (LexState *ls) {
 ** structure to chain all variables in the left-hand side of an
 ** assignment
 */
+typedef struct LHS_assign LHS_assign;
 struct LHS_assign {
-  struct LHS_assign *prev;
+  LHS_assign *prev;
   expdesc v;  /* variable (global, local, upvalue, or indexed) */
 };
 
@@ -905,7 +907,7 @@ struct LHS_assign {
 ** local value in a safe place and use this safe copy in the previous
 ** assignment.
 */
-static void check_conflict (LexState *ls, struct LHS_assign *lh, expdesc *v) {
+static void check_conflict (LexState *ls, LHS_assign *lh, expdesc *v) {
   FuncState *fs = ls->fs;
   int extra = fs->freereg;  /* eventual position to save local variable */
   int conflict = 0;
@@ -928,12 +930,12 @@ static void check_conflict (LexState *ls, struct LHS_assign *lh, expdesc *v) {
 }
 
 
-static void assignment (LexState *ls, struct LHS_assign *lh, int nvars) {
+static void assignment (LexState *ls, LHS_assign *lh, int nvars) {
   expdesc e;
   check_condition(ls, VLOCAL <= lh->v.k && lh->v.k <= VINDEXED,
                       "syntax error");
   if (testnext(ls, ',')) {  /* assignment -> `,' primaryexp assignment */
-    struct LHS_assign nv;
+    LHS_assign nv;
     nv.prev = lh;
     primaryexp(ls, &nv.v);
     if (nv.v.k == VLOCAL)
@@ -1224,7 +1226,7 @@ static void funcstat (LexState *ls, int line) {
 static void exprstat (LexState *ls) {
   /* stat -> func | assignment */
   FuncState *fs = ls->fs;
-  struct LHS_assign v;
+  LHS_assign v;
   primaryexp(ls, &v.v);
   if (v.v.k == VCALL)  /* stat -> func */
     SETARG_C(getcode(fs, &v.v), 1);  /* call statement uses no results */
