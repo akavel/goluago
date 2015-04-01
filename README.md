@@ -7,9 +7,21 @@ for production** use), but some important goals were already completed successfu
 STATUS
 ------
 
-[C API: ~57% complete (81/142 + 1), ~15% have some test (21/143)](#C-API-STATUS)
+### Pushback (2014-12-10: Go 1.4):
+
+**NOTE:** because the `go` command's support for the internal C compiler [was
+removed with Go 1.4](https://golang.org/doc/go1.4#gocmd), the goluago project
+won't build successfully with `go get` under Go 1.4+ anymore. On one hand,
+that's a major setback. But on the other hand, that's a strong motivation to
+explore the possible use of [Russ Cox's c2go](http://rsc.io/c2go) to convert
+the Lua C sources to pure Go (with no more C).
+
+That's what I'm aiming for with the current "c2go" branch of the goluago
+project.
 
 ### Alpha2 (2014-05-15):
+
+[C API: ~57% complete (81/142 + 1), ~15% have some test (21/143)](#C-API-STATUS)
 
   * [MILESTONE][API] most of the core C API implemented ([details below](#C-API-STATUS))
 
