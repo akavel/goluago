@@ -4,6 +4,11 @@ set LUASRC=
 set PREPRO=c:\mingw-tdm64\bin\cpp.exe
 ::FIXME - must make this cross-platform:
 set RUNTIME=windows_amd64
+set C2GO=%gopath%\bin\c2go
+
+:: make sure we have c2go installed
+:: TODO(akavel): fork to keep a stable, controlled version
+go get -v rsc.io/c2go
 
 :: collect main headers of Lua
 rmdir /q/s tmph  2> nul
@@ -42,7 +47,7 @@ for %%f in (l*.c) do (
 )
 
 rmdir /q/s tmpgo  2> nul
-call runc2go -f=fixup.txt -o=tmpgo -I=%CD%/tmpc %LUASRC% 2> errors2go.txt
+%C2GO% -c=c2go.cfg -dst=tmpgo -I=%CD%/tmpc %LUASRC% 2> errors2go.txt
 
 endlocal
 goto :eof
@@ -58,7 +63,7 @@ cd tmpc
 %PREPRO% -C < amalgm0.c > amalgm.c
 cd ..
 
-::call runc2go -f fixup.txt -o tmpgo -I=%CD%/tmph %LUASRC% 2> errors2go.txt
-call runc2go -f fixup.txt -o tmpgo tmpc\amalgm.c 2> errors2go.txt
+::%C2GO% -c c2go.cfg -dst tmpgo -I=%CD%/tmph %LUASRC% 2> errors2go.txt
+%C2GO% -c c2go.cfg -dst tmpgo tmpc\amalgm.c 2> errors2go.txt
 
 endlocal
