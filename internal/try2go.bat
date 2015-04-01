@@ -25,6 +25,8 @@ echo #undef luaL_argcheck >> tmph\lauxlib.h
 echo #define luaL_argcheck(a,b,c,d) mylua_argcheck(a,((b)!=0),c,d) >> tmph\lauxlib.h
 echo #undef luaL_setn     >> tmph\lauxlib.h
 echo #define luaL_setn(a,b,c) NOP() >> tmph\lauxlib.h
+echo #undef luaL_getmetatable >> tmph\lauxlib.h
+echo #define luaL_getmetatable(L,n) lua_getfield(L,LUA_REGISTRYINDEX,(n)) >> tmph\lauxlib.h
 
 :: merge all headers of Lua
 echo #include "gostdc.h" > tmph\bigh0.h
