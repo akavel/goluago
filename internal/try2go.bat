@@ -36,7 +36,7 @@ for %%f in (l*.c) do (
 cd tmph
 :: -C  keep comments
 :: -P  don't generate linemarkers
-%PREPRO% -C -P -D LUA_CORE < bigh0.h > bigh.h
+%PREPRO% -C -P -D LUA_CORE < bigh0.h | go run ../prepro.go > bigh.h
 cd ..
 
 :: expand macros in main sources of Lua

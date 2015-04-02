@@ -34,8 +34,6 @@ func main() {
 		// FIXME(akavel): c2go chokes on func argument named L,
 		// replacing all occurences with 'nil' - below we workaround
 		Replace(`\bL\b`, `_L`, true),
-		Replace(`->_L\b`, `->L`, true),
-		Replace(`\._L\b`, `.L`, true),
 		Replace(`'_L'`, `'L'`, true),
 		Replace(`"_L"`, `"L"`, true),
 		pipe.Write(os.Stdout),
