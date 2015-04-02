@@ -29,7 +29,10 @@ struct FILE *mylua_popen(lua_State *, const char *, const char *);
 #define HARDSTACKTESTS
 
 //FIXME: MC: is below ok?
-void *NULL;
+//void *NULL;
+#define NULL nil
+void *nil;
+//#define nil ((void*)0)
 
 extern double HUGE_VAL;
 
