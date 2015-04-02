@@ -42,16 +42,18 @@ cd ..
 :: expand macros in main sources of Lua
 rmdir /q/s tmpc  2> nul
 mkdir tmpc
-for %%f in (l*.c) do (
-  echo #include "../tmph/bigh.h" > tmpc\%%f
-  type %%f | go run prepro.go | %PREPRO% -C -P -D LUA_CORE -imacros tmph/bigh0.h >> tmpc\%%f
-  call set LUASRC=%%LUASRC%% tmpc/%%f
-)
+for %%f in (l*.c) do call :expandMacros %%f
 
 rmdir /q/s tmpgo  2> nul
 %C2GO% -c=c2go.cfg -dst=tmpgo -I=%CD%/tmpc %LUASRC% 2> errors2go.txt
 
 endlocal
+goto :eof
+
+:expandMacros luamodule.c
+  echo #include "../tmph/bigh.h" > tmpc\%1
+  type %1 | go run prepro.go | %PREPRO% -C -P -D LUA_CORE -imacros tmph/bigh0.h >> tmpc\%1
+  call set LUASRC=%%LUASRC%% tmpc/%1
 goto :eof
 
 
