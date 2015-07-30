@@ -9,23 +9,24 @@ import (
 	"gopkg.in/pipe.v2"
 )
 
+var p = regexp.MustCompile(`\bstruct\s+([A-Za-z_0-9]+)`)
+
 func main() {
-	p := regexp.MustCompile(`\bstruct\s+([A-Za-z_0-9]+)`)
 	seen := map[string]bool{}
-	// extract all "struct foobar", change to typedefs
 	err := pipe.Run(pipe.Line(
 		pipe.Read(os.Stdin),
+		// extract all "struct foobar", change to typedefs
 		pipe.Replace(func(line []byte) []byte {
 			m := p.FindSubmatch(line)
 			if m == nil {
 				return nil
 			}
-			s := string(m[1])
-			if seen[s] {
+			name := string(m[1])
+			if seen[name] {
 				return nil
 			}
-			seen[s] = true
-			return []byte("typedef struct " + s + " " + s + ";\n")
+			seen[name] = true
+			return []byte("typedef struct " + name + " " + name + ";\n")
 		}),
 		pipe.Write(os.Stdout),
 	))
