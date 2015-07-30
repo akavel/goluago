@@ -3,13 +3,14 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"regexp"
 
 	"gopkg.in/pipe.v2"
 )
 
-var p = regexp.MustCompile(`\bstruct\s+([A-Za-z_0-9]+)`)
+var p = regexp.MustCompile(`\b(struct|enum)\s+([A-Za-z_0-9]+)`)
 
 func main() {
 	seen := map[string]bool{}
@@ -21,12 +22,13 @@ func main() {
 			if m == nil {
 				return nil
 			}
-			name := string(m[1])
+			typ := string(m[1])
+			name := string(m[2])
 			if seen[name] {
 				return nil
 			}
 			seen[name] = true
-			return []byte("typedef struct " + name + " " + name + ";\n")
+			return []byte(fmt.Sprintf("typedef %s %[2]s %[2]s;\n", typ, name))
 		}),
 		pipe.Write(os.Stdout),
 	))

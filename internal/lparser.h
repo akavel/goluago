@@ -16,7 +16,7 @@
 ** Expression descriptor
 */
 
-typedef enum {
+enum expkind {
   VVOID,	/* no value */
   VNIL,
   VTRUE,
@@ -32,7 +32,7 @@ typedef enum {
   VNONRELOC,	/* info = result register */
   VCALL,	/* info = instruction pc */
   VVARARG	/* info = instruction pc */
-} expkind;
+};
 
 typedef struct expdesc {
   expkind k;

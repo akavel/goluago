@@ -147,7 +147,7 @@ enum OpMode {iABC, iABx, iAsBx};  /* basic instruction format */
 ** grep "ORDER OP" if you change these enums
 */
 
-typedef enum {
+enum OpCode {
 /*----------------------------------------------------------------------
 name		args	description
 ------------------------------------------------------------------------*/
@@ -205,7 +205,7 @@ OP_CLOSE,/*	A 	close all variables in the stack up to (>=) R(A)*/
 OP_CLOSURE,/*	A Bx	R(A) := closure(KPROTO[Bx], R(A), ... ,R(A+n))	*/
 
 OP_VARARG/*	A B	R(A), R(A+1), ..., R(A+B-1) = vararg		*/
-} OpCode;
+};
 
 
 #define NUM_OPCODES	(cast(int, OP_VARARG) + 1)
