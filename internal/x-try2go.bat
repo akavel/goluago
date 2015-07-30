@@ -18,7 +18,7 @@ for %%f in (*.h) do (
 
 :: patch some headers
 echo.                      > tmph\gostdc.h
-type *.h l*.c | go run xstructs.go | findstr /v /c:"struct va_list" | findstr /v /c:"struct time_t" >> tmph\gostdc.h
+type *.h l*.c | go run x-structs.go | findstr /v /c:"struct va_list" | findstr /v /c:"struct time_t" >> tmph\gostdc.h
 echo #include "fix2go.h"  >> tmph\gostdc.h
 echo #undef luaL_argcheck >> tmph\lauxlib.h
 echo #define luaL_argcheck(a,b,c,d) mylua_argcheck(a,((b)!=0),c,d) >> tmph\lauxlib.h
@@ -35,7 +35,7 @@ for %%f in (l*.c) do (
 cd tmph
 :: -C  keep comments
 :: -P  don't generate linemarkers
-%PREPRO% -C -P -D LUA_CORE < bigh0.h | go run ../prepro.go > bigh.h
+%PREPRO% -C -P -D LUA_CORE < bigh0.h | go run ../x-prepro.go > bigh.h
 cd ..
 
 :: expand macros in main sources of Lua
@@ -46,14 +46,14 @@ mkdir tmpc
 for %%f in (lauxlib.c) do call :expandMacros %%f
 
 rmdir /q/s tmpgo  2> nul
-%C2GO% -c=c2go.cfg -dst=tmpgo -I=%CD%/tmpc %LUASRC% 2> errors2go.txt
+%C2GO% -c=x-c2go.cfg -dst=tmpgo -I=%CD%/tmpc %LUASRC% 2> x-errors2go.txt
 
 endlocal
 goto :eof
 
 :expandMacros luamodule.c
   echo #include "../tmph/bigh.h" > tmpc\%1
-  type %1 | go run prepro.go | %PREPRO% -C -P -D LUA_CORE -imacros tmph/bigh0.h >> tmpc\%1
+  type %1 | go run x-prepro.go | %PREPRO% -C -P -D LUA_CORE -imacros tmph/bigh0.h >> tmpc\%1
   call set LUASRC=%%LUASRC%% tmpc/%1
 goto :eof
 
@@ -61,14 +61,14 @@ goto :eof
 
 echo #include "gostdc.h" > tmpc\amalgm0.c
 for %%f in (l*.c) do (
-  go run prepro.go < %%f >> tmpc\amalgm0.c
+  go run x-prepro.go < %%f >> tmpc\amalgm0.c
   call set LUASRC=%%LUASRC%% tmpc/%%f
 )
 cd tmpc
 %PREPRO% -C < amalgm0.c > amalgm.c
 cd ..
 
-::%C2GO% -c c2go.cfg -dst tmpgo -I=%CD%/tmph %LUASRC% 2> errors2go.txt
-%C2GO% -c c2go.cfg -dst tmpgo tmpc\amalgm.c 2> errors2go.txt
+::%C2GO% -c x-c2go.cfg -dst tmpgo -I=%CD%/tmph %LUASRC% 2> x-errors2go.txt
+%C2GO% -c x-c2go.cfg -dst tmpgo tmpc\amalgm.c 2> x-errors2go.txt
 
 endlocal

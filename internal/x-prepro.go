@@ -11,19 +11,6 @@ import (
 	"gopkg.in/pipe.v2"
 )
 
-func Replace(from, to string, regex bool) pipe.Pipe {
-	if !regex {
-		return pipe.Replace(func(line []byte) []byte {
-			return bytes.Replace(line, []byte(from), []byte(to), -1)
-		})
-	} else {
-		pattern := regexp.MustCompile(from)
-		return pipe.Replace(func(line []byte) []byte {
-			return pattern.ReplaceAll(line, []byte(to))
-		})
-	}
-}
-
 func main() {
 	err := pipe.Run(pipe.Line(
 		pipe.Read(os.Stdin),
@@ -41,5 +28,18 @@ func main() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %s", err)
 		os.Exit(1)
+	}
+}
+
+func Replace(from, to string, regex bool) pipe.Pipe {
+	if !regex {
+		return pipe.Replace(func(line []byte) []byte {
+			return bytes.Replace(line, []byte(from), []byte(to), -1)
+		})
+	} else {
+		pattern := regexp.MustCompile(from)
+		return pipe.Replace(func(line []byte) []byte {
+			return pattern.ReplaceAll(line, []byte(to))
+		})
 	}
 }
