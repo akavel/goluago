@@ -934,13 +934,13 @@ extern char *fgets(char *, int, FILE *);
 extern int fputc(int, FILE *);
 extern int fputs(const char *, FILE *);
 extern int getc(FILE *);
-#define	getc(f)	((f)->rp>=(f)->wp?_IO_getc(f):*(f)->rp++&_IO_CHMASK)
+//#define	getc(f)	((f)->rp>=(f)->wp?_IO_getc(f):*(f)->rp++&_IO_CHMASK)
 extern int _IO_getc(FILE *f);
 extern int getchar(void);
 #define	getchar()	getc(stdin)
 extern char *gets(char *);
 extern int putc(int, FILE *);
-#define	putc(c, f) ((f)->wp>=(f)->rp?_IO_putc(c, f):(*(f)->wp++=c)&_IO_CHMASK)
+//#define	putc(c, f) ((f)->wp>=(f)->rp?_IO_putc(c, f):(*(f)->wp++=c)&_IO_CHMASK)
 extern int _IO_putc(int, FILE *);
 extern int putchar(int);
 #define	putchar(c)	putc(c, stdout)
