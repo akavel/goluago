@@ -30,7 +30,7 @@ echo #define luaL_getmetatable(L,n) lua_getfield(L,LUA_REGISTRYINDEX,(n)) >> tmp
 :: merge all headers of Lua
 echo #include "gostdc.h" > tmph\bigh0.h
 for %%f in (l*.c) do (
-  findstr /c:"#include "" %%f  
+  findstr /c:"#include "" %%f
 ) >> tmph\bigh0.h
 cd tmph
 :: -C  keep comments
