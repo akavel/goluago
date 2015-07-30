@@ -7,8 +7,7 @@ set RUNTIME=windows_amd64
 set C2GO=%gopath%\bin\c2go
 
 :: make sure we have c2go installed
-:: TODO(akavel): fork to keep a stable, controlled version
-go get -v rsc.io/c2go
+go get -v github.com/akavel/c2go
 
 :: collect main headers of Lua
 rmdir /q/s tmph  2> nul
