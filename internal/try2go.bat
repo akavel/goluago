@@ -41,7 +41,9 @@ cd ..
 :: expand macros in main sources of Lua
 rmdir /q/s tmpc  2> nul
 mkdir tmpc
-for %%f in (l*.c) do call :expandMacros %%f
+:: FIXME(akavel): for now, working on one file only; increase to all when ready
+::for %%f in (l*.c) do call :expandMacros %%f
+for %%f in (lauxlib.c) do call :expandMacros %%f
 
 rmdir /q/s tmpgo  2> nul
 %C2GO% -c=c2go.cfg -dst=tmpgo -I=%CD%/tmpc %LUASRC% 2> errors2go.txt
