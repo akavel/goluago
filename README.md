@@ -7,6 +7,8 @@ for production** use), but some important goals were already completed successfu
 STATUS
 ------
 
+### ON HOLD/DORMANT as of 2016. I have trouble (and not enough time to dive deeper)  understanding and exploring c2go's type unification code, and I need that to be able to add various missing operators (e.g. the ternary operator ?: ) and constructs (e.g. assignment in expressions, i.e. while((x=y++)<3) ). If someone cares enough to add them to c2go, I'd be happy to come back this project. (In any case, if you'd like discussing something related to the project, you're very welcome to contact me at czapkofan@gmail.com).
+
 ### Pushback (2014-12-10: Go 1.4):
 
 **NOTE:** because the `go` command's support for the internal C compiler [was
